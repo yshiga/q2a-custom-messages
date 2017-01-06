@@ -22,5 +22,4 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 @define( 'CML_TARGET_THEME_NAME', 'q2a-material-lite');
 @define( 'CML_RELATIVE_PATH', '../qa-plugin/'.CML_FOLDER.'/');
 
-qa_register_plugin_overrides('qa-custom-messages-overrides.php');
 qa_register_plugin_layer('qa-custom-messages-layer.php','Custom Message List Layer');
