@@ -2,60 +2,25 @@
   <div class="mdl-card__supporting-text">
     <div class="mdl-typography--title mdl-typography--font-bold margin--top-16px">メッセージボックス</div>
     <ul class="mdl-list">
+      <?php foreach ($messages as $message): ?>
       <li class="mdl-list__item">
-        <a href="メッセージのURL">
+        <a href="<?php echo $message['messageurl']; ?>">
           <span class="mdl-list__item-primary-content">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+            <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
           </span>
           <span class="mdl-list__item-secondary-content">
             <div class="mdl-typography--subhead">
-              管理人　
+              <?php echo $message['handle']; ?>　
               <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
               <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
             </div>
             <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
+              <?php echo $message['content']; ?>
             </p>
           </span>
         </a>
       </li>
-      <li class="mdl-list__item">
-        <a href="メッセージのURL">
-          <span class="mdl-list__item-primary-content">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
-          </span>
-          <span class="mdl-list__item-secondary-content">
-            <span class="mdl-typography--subhead">
-              管理人　
-              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
-              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
-            </span>
-            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
-            </p>
-          </span>
-        </a>
-      </li>
-      <li class="mdl-list__item">
-        <a href="メッセージのURL">
-          <span class="mdl-list__item-primary-content">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
-          </span>
-          <span class="mdl-list__item-secondary-content">
-            <span class="mdl-typography--subhead">
-              管理人　
-              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
-              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
-            </span>
-            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
-            </p>
-          </span>
-        </a>
-      </li>
+      <?php endforeach; ?>
     </ul>
   </div>
 </div>
