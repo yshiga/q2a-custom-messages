@@ -1,3 +1,107 @@
-メッセージの一覧のhtmlをここに書いてください。
-メッセージ送信したもの
-送信されたもの
+<div class="centering__width-640 mdl-card mdl-cell mdl-cell--12-col margin--top-16px">
+  <div class="mdl-card__supporting-text">
+    <div class="mdl-typography--title mdl-typography--font-bold margin--top-16px">メッセージボックス</div>
+    <ul class="mdl-list">
+      <li class="mdl-list__item">
+        <a href="メッセージのURL">
+          <span class="mdl-list__item-primary-content">
+            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+          </span>
+          <span class="mdl-list__item-secondary-content">
+            <div class="mdl-typography--subhead">
+              管理人　
+              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
+              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+            </div>
+            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
+              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+              サンプルテキストです。
+            </p>
+          </span>
+        </a>
+      </li>
+      <li class="mdl-list__item">
+        <a href="メッセージのURL">
+          <span class="mdl-list__item-primary-content">
+            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+          </span>
+          <span class="mdl-list__item-secondary-content">
+            <span class="mdl-typography--subhead">
+              管理人　
+              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
+              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+            </span>
+            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
+              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+              サンプルテキストです。
+            </p>
+          </span>
+        </a>
+      </li>
+      <li class="mdl-list__item">
+        <a href="メッセージのURL">
+          <span class="mdl-list__item-primary-content">
+            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+          </span>
+          <span class="mdl-list__item-secondary-content">
+            <span class="mdl-typography--subhead">
+              管理人　
+              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
+              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+            </span>
+            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
+              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+              サンプルテキストです。
+            </p>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<style>
+.mdl-card__supporting-text {
+  width: auto;
+  overflow: auto;
+}
+.mdl-list__item {
+  border-top: 1px solid #ccc;
+  padding: 0;
+}
+.mdl-list__item a {
+  color: #ababab;
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+}
+.mdl-list__item a:hover {
+  text-decoration: none;
+  background-color: #efefef;
+}
+.mdl-list__item .mdl-list__item-secondary-content{
+  align-items: baseline;
+}
+.mdl-list__item .mdl-typography--subhead{
+  color: #333;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+}
+@media (max-width:769px) {
+  .mdl-list__item .mdl-typography--subhead{
+    flex-direction: column;
+  }
+}
+@media (max-width:414px) {
+  .mdl-list__item .mdl-list__item-primary-content img{
+    width: 30px;
+    height: auto;
+  }
+  .mdl-list__item a {
+    padding: 16px 0;
+  }
+}
+.mdl-list__item .mdl-typography--subhead .mdl-chip__text{
+  margin-right: auto;
+}
+</style>
