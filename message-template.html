@@ -16,41 +16,39 @@
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color-text--white">送信</button>
       </form>
     </div>
+    <div class="messages">
+      <div class="message-container received">
+          <div class="avatar">
+            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+          </div>
+          <div class="message">
+            <div class="mdl-color--grey-50 ballon padding--16px">
+                
+                サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+                サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+                サンプルテキストです。
 
-    <div class="message-container received">
+            </div>
+            <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+          </div>
+      </div>
+      <div class="message-container sent">
         <div class="avatar">
           <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
         </div>
         <div class="message">
-          <div class="mdl-color--grey-50 ballon">
-            <div class="mdl-card__supporting-text">
-              <p>
+          <div class="mdl-color--orange-100 ballon padding--16px">
+
               サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
               サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
+              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
               サンプルテキストです。
-              </p>
-            </div>
+
           </div>
           <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
         </div>
-    </div>
-    <div class="message-container sent">
-      <div class="avatar">
-        <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
       </div>
-      <div class="message">
-        <div class="mdl-color--orange-100 ballon">
-          <div class="mdl-card__supporting-text">
-            <p>
-            サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-            サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-            サンプルテキストです。
-            </p>
-          </div>
-        </div>
-        <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
-      </div>
-
     </div>
 
 </div>
@@ -83,20 +81,11 @@
   .message-container .avatar {
     margin: 16px;
   }
-  .message-container .message {
-    position: relative;
-    flex-basis: 80%;
-  }
   .message-container .message .ballon {
     border-radius: 8px;
-  }
-  .message-container p {
     font-size: 16px;
+    line-height: 24px;
     color: #111;
-  }
-  .message-container.sent .message .date {
-    margin-left: auto;
-    margin-top: 4px;
   }
   @media (max-width:375px){
     .message-container .avatar {
