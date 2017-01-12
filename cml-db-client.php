@@ -38,6 +38,8 @@ class cml_db_client
     $sql .= "     GROUP BY userid";
     $sql .= "   ) pm";
     $sql .= " )";
+    $sql .= " AND tu.handle IS NOT NULL";
+    $sql .= " AND fu.handle IS NOT NULL";
     $sql .= " ORDER BY created DESC";
     return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid, $userid));
   }
