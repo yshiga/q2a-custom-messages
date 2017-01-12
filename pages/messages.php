@@ -49,7 +49,7 @@
 //  Prepare content for theme
 
   $qa_content = qa_content_prepare();
-  $qa_content['title'] = qa_lang_html( 'Private messages' );
+  $qa_content['title'] = qa_lang_html( 'custom_messages/messages_page_title' );
   $qa_content['script_rel'][] = 'qa-content/qa-user.js?'.QA_VERSION;
 
   $qa_content['message_list'] = array(
