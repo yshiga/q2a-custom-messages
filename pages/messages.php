@@ -9,7 +9,7 @@
   require_once QA_INCLUDE_DIR.'app/users.php';
   require_once QA_INCLUDE_DIR.'app/format.php';
   require_once QA_INCLUDE_DIR.'app/limits.php';
-  require_once CML_DIR.'cml-db-client.php';
+  require_once CML_DIR.'/cml-db-client.php';
 
   $loginUserId = qa_get_logged_in_userid();
   $loginUserHandle = qa_get_logged_in_handle();
@@ -32,9 +32,9 @@
     return $qa_content;
   }
 
-  if (!qa_opt('allow_private_messages') || !qa_opt('show_message_history'))
+  if (!qa_opt('allow_private_messages') || !qa_opt('show_message_history')) {
     return include QA_INCLUDE_DIR.'qa-page-not-found.php';
-
+  }
 
 //  Find the messages for this user
 
@@ -42,16 +42,11 @@
   $pagesize = qa_opt('page_size_pms');
 
   // get number of messages then actual messages for this page
-  // $pmSpecCount = qa_db_selectspec_count( $func('private', $loginUserId, true) );
-  // $pmSpec = $func('private', $loginUserId, true, $start, $pagesize);
-  
-  // TODO メッセージ取得処理
-  $userMessages = get_user_messages($loguinUserid);
-  // list($numMessages, $userMessages) = qa_db_select_with_pending($pmSpecCount, $pmSpec);
-  // TODO メッセージ数取得
+  $userMessages = cml_db_client::get_user_messages($loginUserId);
   $count = count($userMessages);
   // TODO メッセージを$pagesizeに収める処理
   // array_slice ( array $array , int $offset [, int $length = NULL [, bool $preserve_keys = false ]] )
+  $userMessages = array_slice($userMessages, $start, $pagesize);
 //  Prepare content for theme
 
   $qa_content = qa_content_prepare();
@@ -63,19 +58,29 @@
     'messages' => array(),
   );
 
-  // $htmlDefaults = qa_message_html_defaults();
-  // if ($showOutbox)
-  //   $htmlDefaults['towhomview'] = true;
 
   foreach ($userMessages as $message) {
-    $msgFormat = qa_message_html_fields($message, $htmlDefaults);
-    $replyHandle = $showOutbox ? $message['tohandle'] : $message['fromhandle'];
+    $msgFormat = array();
+    if ($loginUserId === $message['tohandle']) {
+      $replyHandle = $message['fromhandle'];
+      $replyBlobid = $message['fromavatarblobid'];
+      $replyLocation = $message['fromlocation'];
+    } else {
+      $replyHandle = $message['tohandle'];
+      $replyBlobid = $message['toavatarblobid'];
+      $replyLocation = $message['tolocation'];
+    }
+    $msgFormat['avatarblobid'] = $replyBlobid;
+    $msgFormat['handle'] = $replyHandle;
+    $msgFormat['location'] = $replyLocation;
+    $create_date = new DateTime($message['created']);
+    $msgFormat['create_date'] = $create_date->format('Y年m月d日');
+    $msgFormat['content'] = $message['content'];
+    $msgFormat['messageurl'] = qa_path_html('message/'.$replyHandle);    
 
     $qa_content['message_list']['messages'][] = $msgFormat;
   }
 
   $qa_content['page_links'] = qa_html_page_links(qa_request(), $start, $pagesize, $count, qa_opt('pages_prev_next'));
-
-  $qa_content['navigation']['sub'] = qa_messages_sub_navigation($showOutbox ? 'outbox' : 'inbox');
 
   return $qa_content;
