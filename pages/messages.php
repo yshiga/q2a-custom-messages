@@ -44,13 +44,12 @@
   // get number of messages then actual messages for this page
   $userMessages = cml_db_client::get_user_messages($loginUserId);
   $count = count($userMessages);
-  // TODO メッセージを$pagesizeに収める処理
-  // array_slice ( array $array , int $offset [, int $length = NULL [, bool $preserve_keys = false ]] )
   $userMessages = array_slice($userMessages, $start, $pagesize);
+  
 //  Prepare content for theme
 
   $qa_content = qa_content_prepare();
-  $qa_content['title'] = qa_lang_html( 'Private Messages' );
+  $qa_content['title'] = qa_lang_html( 'Private messages' );
   $qa_content['script_rel'][] = 'qa-content/qa-user.js?'.QA_VERSION;
 
   $qa_content['message_list'] = array(
@@ -61,7 +60,7 @@
 
   foreach ($userMessages as $message) {
     $msgFormat = array();
-    if ($loginUserId === $message['tohandle']) {
+    if ($loginUserId === $message['touserid']) {
       $replyHandle = $message['fromhandle'];
       $replyBlobid = $message['fromavatarblobid'];
       $replyLocation = $message['fromlocation'];
@@ -75,7 +74,9 @@
     $msgFormat['location'] = $replyLocation;
     $create_date = new DateTime($message['created']);
     $msgFormat['create_date'] = $create_date->format('Y年m月d日');
-    $msgFormat['content'] = $message['content'];
+    $content = strip_tags($message['content']);
+    $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
+    $msgFormat['content'] = $content;
     $msgFormat['messageurl'] = qa_path_html('message/'.$replyHandle);    
 
     $qa_content['message_list']['messages'][] = $msgFormat;
