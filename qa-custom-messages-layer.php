@@ -4,9 +4,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages') {
       // $template = file_get_contents(CML_DIR . '/messages-template.html');
       // $this->output($template);
-      $messages = $content['message_list']['messages'];
-      $path = CML_DIR . '/messages-template.html';
-      include $path;
+      if (qa_is_logged_in()) {
+        $messages = $content['message_list']['messages'];
+        $path = CML_DIR . '/messages-template.html';
+        include $path;
+      }
     } else {
       qa_html_theme_base::main_parts($content);
     }
@@ -14,7 +16,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
   
   public function page_title_error() {
     $templates = array('messages', 'message');
-    if (qa_opt('site_theme') !== CML_TARGET_THEME_NAME || !in_array($this->template, $templates) ) {
+    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME || in_array($this->template, $templates) ) {
+  		if (isset($this->content['error']))
+  			$this->error($this->content['error']);
+    } else {
       qa_html_theme_base::page_title_error();
     }
     
@@ -50,6 +55,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
         }
         $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
         $create_date = new DateTime('@'.$message['raw']['created']);
+        $create_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
         $tmp['created'] = $create_date->format('Y年m月d日');
         $messages[] = $tmp;
       }
