@@ -7,11 +7,11 @@
       <?php else: ?>
         <?php foreach ($messages as $message): ?>
         <li class="mdl-list__item">
-          <a href="<?php echo $message['messageurl']; ?>">
-            <span class="mdl-list__item-primary-content">
+          <a href="<?php echo $message['messageurl']; ?>" class="item-link">
+            <span class="mdl-list__item-primary-content item-avatar">
               <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
             </span>
-            <span class="mdl-list__item-secondary-content">
+            <span class="mdl-list__item-secondary-content item-content">
               <div class="mdl-typography--subhead">
                 <?php echo $message['handle']; ?>　
                 <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：<?php echo $message['location']; ?>　　</span>
@@ -29,6 +29,15 @@
   </div>
 </div>
 <style>
+.mdl-list__item .item-link {
+  width: 100%;
+}
+.mdl-list__item .item-avatar {
+  width: 15%;
+}
+.mdl-list__item .item-content {
+  width: 85%;
+}
 .mdl-card__supporting-text {
   width: auto;
   overflow: auto;
