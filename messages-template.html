@@ -1,65 +1,43 @@
 <div class="centering__width-640 mdl-card mdl-cell mdl-cell--12-col margin--top-16px">
   <div class="mdl-card__supporting-text">
-    <div class="mdl-typography--title mdl-typography--font-bold margin--top-16px">メッセージボックス</div>
+    <div class="mdl-typography--title mdl-typography--font-bold margin--top-16px"><?php echo qa_lang_html( 'custom_messages/messages_page_title' ); ?></div>
     <ul class="mdl-list">
-      <li class="mdl-list__item">
-        <a href="メッセージのURL">
-          <span class="mdl-list__item-primary-content">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
-          </span>
-          <span class="mdl-list__item-secondary-content">
-            <div class="mdl-typography--subhead">
-              管理人　
-              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
-              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
-            </div>
-            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
-            </p>
-          </span>
-        </a>
-      </li>
-      <li class="mdl-list__item">
-        <a href="メッセージのURL">
-          <span class="mdl-list__item-primary-content">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
-          </span>
-          <span class="mdl-list__item-secondary-content">
-            <span class="mdl-typography--subhead">
-              管理人　
-              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
-              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+      <?php if (empty($messages)): ?>
+        <li class="mdl-list__item"><p>メッセージはありません</p></li>
+      <?php else: ?>
+        <?php foreach ($messages as $message): ?>
+        <li class="mdl-list__item">
+          <a href="<?php echo $message['messageurl']; ?>" class="item-link">
+            <span class="mdl-list__item-primary-content item-avatar">
+              <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
             </span>
-            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
-            </p>
-          </span>
-        </a>
-      </li>
-      <li class="mdl-list__item">
-        <a href="メッセージのURL">
-          <span class="mdl-list__item-primary-content">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
-          </span>
-          <span class="mdl-list__item-secondary-content">
-            <span class="mdl-typography--subhead">
-              管理人　
-              <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：広島</span>
-              <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+            <span class="mdl-list__item-secondary-content item-content">
+              <div class="mdl-typography--subhead">
+                <?php echo $message['handle']; ?>　
+                <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：<?php echo $message['location']; ?>　　</span>
+                <span class="date mdl-typography--caption mdl-color-text--grey-500"><?php echo $message['create_date']; ?></span>
+              </div>
+              <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
+                <?php echo $message['content']; ?>
+              </p>
             </span>
-            <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
-            </p>
-          </span>
-        </a>
-      </li>
+          </a>
+        </li>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </ul>
   </div>
 </div>
 <style>
+.mdl-list__item .item-link {
+  width: 100%;
+}
+.mdl-list__item .item-avatar {
+  width: 15%;
+}
+.mdl-list__item .item-content {
+  width: 85%;
+}
 .mdl-card__supporting-text {
   width: auto;
   overflow: auto;
