@@ -16,10 +16,12 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
     exit;
 }
 
-//Define global constants
+// Define global constants
 @define( 'CML_DIR', dirname( __FILE__ ) );
 @define( 'CML_FOLDER', basename( dirname( __FILE__ ) ) );
 @define( 'CML_TARGET_THEME_NAME', 'q2a-material-lite');
 @define( 'CML_RELATIVE_PATH', '../qa-plugin/'.CML_FOLDER.'/');
-
+// layer
 qa_register_plugin_layer('qa-custom-messages-layer.php','Custom Message List Layer');
+// overrides
+qa_register_plugin_overrides('qa-custom-messages-overrides.php');
