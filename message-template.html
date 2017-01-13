@@ -1,54 +1,18 @@
 <div class="centering__width-640 mdl-card mdl-cell mdl-cell--12-col margin--top-16px padding--16px">
-
-    <div class="mdl-typography--title">
-      <button class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">chevron_left</i>
-      </button>
-      管理人
-    </div>
-
-    <div class="message-input">
-      <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <textarea class="mdl-textfield__input" type="text" rows="3" ></textarea>
-          <label class="mdl-textfield__label" for="sample1">メッセージを入力</label>
-        </div>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color-text--white">送信</button>
-      </form>
-    </div>
+    <?php foreach ($messages as $message): ?>
     <div class="messages">
-      <div class="message-container received">
+      <div class="message-container <?php echo $message['status']; ?>">
           <div class="avatar">
-            <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+            <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
           </div>
           <div class="message">
-            <div class="mdl-color--grey-50 ballon padding--16px">
-                
-                サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-                サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-                サンプルテキストです。
-
+            <div class="<?php echo $message['color']; ?> ballon padding--16px">
+                <?php echo $message['content']; ?>
             </div>
-            <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
+            <span class="date mdl-typography--caption mdl-color-text--grey-500" <?php echo $message['textalign']; ?>><?php echo $message['created']; ?></span>
           </div>
       </div>
-      <div class="message-container sent">
-        <div class="avatar">
-          <img src="../?qa=image&amp;qa_blobid=14596667046744151865&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
-        </div>
-        <div class="message">
-          <div class="mdl-color--orange-100 ballon padding--16px">
-
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。サンプルテキストです。
-              サンプルテキストです。
-
-          </div>
-          <span class="date mdl-typography--caption mdl-color-text--grey-500">2016年11月11日</span>
-        </div>
-      </div>
+    <?php endforeach; ?>
     </div>
 
 </div>
