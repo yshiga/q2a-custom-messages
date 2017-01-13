@@ -10,9 +10,11 @@ class cml_db_client
     $sql = '';
     $sql .= "SELECT tu.handle AS tohandle,";
     $sql .= " tu.avatarblobid AS toavatarblobid,";
+    $sql .= " tu.flags AS toflags,";
     $sql .= " tl.location AS tolocation,";
     $sql .= " fu.handle AS fromhandle,";
     $sql .= " fu.avatarblobid AS fromavatarblobid,";
+    $sql .= " fu.flags AS fromflags,";
     $sql .= " fl.location AS fromlocation,";
     $sql .= " m.*";
     $sql .= " FROM qa_messages m";
@@ -34,7 +36,8 @@ class cml_db_client
     $sql .= "     SELECT CASE fromuserid WHEN $ THEN touserid ELSE fromuserid END AS userid,";
     $sql .= "     MAX(messageid) AS messageid";
     $sql .= "     FROM qa_messages";
-    $sql .= "     WHERE fromuserid = $ OR touserid = $";
+    $sql .= "     WHERE (fromuserid = $ OR touserid = $)";
+    $sql .= "     AND type = 'PRIVATE'";
     $sql .= "     GROUP BY userid";
     $sql .= "   ) pm";
     $sql .= " )";

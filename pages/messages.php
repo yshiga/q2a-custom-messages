@@ -21,7 +21,7 @@
   if ($req !== null) {
     return include QA_INCLUDE_DIR.'qa-page-not-found.php';
   }
-    
+  
 
   if (QA_FINAL_EXTERNAL_USERS)
     qa_fatal_error('User accounts are handled by external code');
@@ -64,11 +64,18 @@
       $replyHandle = $message['fromhandle'];
       $replyBlobid = $message['fromavatarblobid'];
       $replyLocation = $message['fromlocation'];
+      $replyFlags = $message['fromflags'];
     } else {
       $replyHandle = $message['tohandle'];
       $replyBlobid = $message['toavatarblobid'];
       $replyLocation = $message['tolocation'];
+      $replyFlags = $message['toflags'];
     }
+    if ($replyFlags & QA_USER_FLAGS_NO_MESSAGES) {
+        // プライベートメッセージオフの人は飛ばす
+        continue;
+    }
+    
     $msgFormat['avatarblobid'] = $replyBlobid;
     $msgFormat['handle'] = $replyHandle;
     $msgFormat['location'] = $replyLocation;
