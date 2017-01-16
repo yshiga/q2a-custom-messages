@@ -16,7 +16,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
   
   public function page_title_error() {
     $templates = array('messages', 'message');
-    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME || in_array($this->template, $templates) ) {
+    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && in_array($this->template, $templates) ) {
   		if (isset($this->content['error']))
   			$this->error($this->content['error']);
     } else {
