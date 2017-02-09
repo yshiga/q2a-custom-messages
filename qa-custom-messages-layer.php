@@ -28,11 +28,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
   public function message_list_and_form($list)
   {
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
-      $input_error_msg = qa_lang('custom_messages/messege_input_error');
-      $this->output('<div id="content-error" class="mdl-card__supporting-text">');
-      $this->output('<span class="mdl-color-text--red">', $input_error_msg, '</span>');
-      $this->output('</div>');
-
+      if (strpos(qa_get_state(), 'message-sent') === false) {
+          $input_error_msg = qa_lang('custom_messages/messege_input_error');
+          $this->output('<div id="content-error" class="mdl-card__supporting-text">');
+          $this->output('<span class="mdl-color-text--red">', $input_error_msg, '</span>');
+          $this->output('</div>');
+      }
       $this->part_title($list);
 
       $this->error(@$list['error']);
@@ -88,7 +89,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
   public function body_footer()
   {
       if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
+        if (strpos(qa_get_state(), 'message-sent') === false) {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
+        }
       }
   }
 }
