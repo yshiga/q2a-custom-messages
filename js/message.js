@@ -15,7 +15,7 @@ $(function(){
     content = content.replace(/<p><br><\/p>/g, '');
     content = content.replace(/<p class=""><br><\/p>/g, '');    
     content = content.replace(/<p class="">(&nbsp;\s?)*<\/p>/g, '');
-    console.log(content);
+    // console.log(content);
     var length = content.length;
     var disabled = true;
     if(length > 0) {
