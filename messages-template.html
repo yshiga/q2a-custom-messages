@@ -17,7 +17,7 @@
                 <span class="mdl-chip__text"><span class="mdl-typography--font-bold">活動場所</span>：<?php echo $message['location']; ?>　　</span>
                 <span class="date mdl-typography--caption mdl-color-text--grey-500"><?php echo $message['create_date']; ?></span>
               </div>
-              <p class="mdl-list__item-text-body mdl-typography--body-color-contrast">
+              <p class="message mdl-list__item-text-body mdl-typography--body-color-contrast">
                 <?php echo $message['content']; ?>
               </p>
             </span>
@@ -81,5 +81,8 @@
 }
 .mdl-list__item .mdl-typography--subhead .mdl-chip__text{
   margin-right: auto;
+}
+p.message {
+  width: 100%;
 }
 </style>
