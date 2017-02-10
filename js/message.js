@@ -21,7 +21,7 @@ $(function(){
     if(length > 0) {
       disabled = false;
     }
-    $(".qa-part-form-message button").prop("disabled", disabled);
+    $("#send-message").prop("disabled", disabled);
     if(disabled) {
       $("#content-error").show();
     } else {
