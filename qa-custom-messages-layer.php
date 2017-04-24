@@ -13,7 +13,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       qa_html_theme_base::main_parts($content);
     }
   }
-  
+
   public function page_title_error() {
     $templates = array('messages', 'message');
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && in_array($this->template, $templates) ) {
@@ -22,9 +22,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
     } else {
       qa_html_theme_base::page_title_error();
     }
-    
+
   }
-  
+
   public function message_list_and_form($list)
   {
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
@@ -43,12 +43,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
         unset($list['form']['tags']); // we already output the tags before the messages
         $this->message_list_form($list);
       }
-      
+
       $messages = array();
       $loginuserhandle = qa_get_logged_in_handle();
       foreach ($list['messages'] as $message) {
         $tmp = array();
-        $tmp['content'] = $message['raw']['content'];
+        $tmp['content'] = $this->embed_replace($message['raw']['content']);
         if ($message['raw']['fromhandle'] === $loginuserhandle) {
           $tmp['status'] = 'sent';
           $tmp['color'] = 'mdl-color--orange-100';
@@ -74,7 +74,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       qa_html_theme_base::message_list_and_form($list);
     }
   }
-  
+
   public function nav($navtype, $level=null)
   {
     $templates = array('messages', 'message');
@@ -85,7 +85,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
     }
     qa_html_theme_base::nav($navtype, $level);
   }
-  
+
   public function body_footer()
   {
       if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
@@ -94,7 +94,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
         }
       }
   }
-  
+
   public function form_buttons($form, $columns)
   {
       if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
