@@ -48,7 +48,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $loginuserhandle = qa_get_logged_in_handle();
       foreach ($list['messages'] as $message) {
         $tmp = array();
-        $tmp['content'] = $this->embed_replace($message['raw']['content']);
+        $tmp['content'] = $this->medium_editor_embed_replace($message['raw']['content']);
         if ($message['raw']['fromhandle'] === $loginuserhandle) {
           $tmp['status'] = 'sent';
           $tmp['color'] = 'mdl-color--orange-100';
