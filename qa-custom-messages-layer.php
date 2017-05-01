@@ -13,12 +13,14 @@ class qa_html_theme_layer extends qa_html_theme_base {
         include $path;
       }
     } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
-      $show_ok = cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30);
-      $messages = isset($content['message_list']);
-      if ($messages || $show_ok) {
-        qa_html_theme_base::main_parts($content);
-      } else {
-        $this->output_not_posts();
+      if (qa_is_logged_in()) {
+        $show_ok = cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30);
+        $messages = isset($content['message_list']);
+        if ($messages || $show_ok) {
+          qa_html_theme_base::main_parts($content);
+        } else {
+          $this->output_not_posts();
+        }
       }
     } else {
       qa_html_theme_base::main_parts($content);
