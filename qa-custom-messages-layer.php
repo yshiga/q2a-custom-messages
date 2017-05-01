@@ -1,4 +1,7 @@
 <?php
+
+require_once CML_DIR.'/cml-db-client.php';
+
 class qa_html_theme_layer extends qa_html_theme_base {
   public function main_parts($content) {
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages') {
@@ -8,6 +11,14 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $messages = $content['message_list']['messages'];
         $path = CML_DIR . '/messages-template.html';
         include $path;
+      }
+    } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
+      $show_ok = cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30);
+      $messages = isset($content['message_list']);
+      if ($messages || $show_ok) {
+        qa_html_theme_base::main_parts($content);
+      } else {
+        $this->output_not_posts();
       }
     } else {
       qa_html_theme_base::main_parts($content);
@@ -105,5 +116,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
           }
       }
       qa_html_theme_base::form_buttons($form, $columns);
+  }
+  
+  private function output_not_posts() {
+    $path = CML_DIR . '/html/not_post_qa_blog.html';
+    $html = file_get_contents($path);
+    $this->output($html);
   }
 }
