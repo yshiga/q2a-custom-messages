@@ -48,7 +48,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $loginuserhandle = qa_get_logged_in_handle();
       foreach ($list['messages'] as $message) {
         $tmp = array();
-        $tmp['content'] = $this->medium_editor_embed_replace($message['raw']['content']);
+        $content = $this->get_html($message['raw']['content']); 
+        // $content = $message['raw']['content'];
+        $tmp['content'] = $this->medium_editor_embed_replace($content);
         if ($message['raw']['fromhandle'] === $loginuserhandle) {
           $tmp['status'] = 'sent';
           $tmp['color'] = 'mdl-color--orange-100';
@@ -110,5 +112,26 @@ class qa_html_theme_layer extends qa_html_theme_base {
           }
       }
       qa_html_theme_base::form_buttons($form, $columns);
+  }
+  
+  public function get_html($html) {
+    require_once QA_INCLUDE_DIR.'util/string.php';
+
+    $htmlunlinkeds=array_reverse(preg_split('|<[Aa]\s+[^>]+>.*</[Aa]\s*>|', $html, -1, PREG_SPLIT_OFFSET_CAPTURE)); // start from end so we substitute correctly
+
+    foreach ($htmlunlinkeds as $htmlunlinked) { // and that we don't detect links inside HTML, e.g. <img src="http://...">
+      $thishtmluntaggeds=array_reverse(preg_split('/<[^>]*>/', $htmlunlinked[0], -1, PREG_SPLIT_OFFSET_CAPTURE)); // again, start from end
+
+      foreach ($thishtmluntaggeds as $thishtmluntagged) {
+        $innerhtml=$thishtmluntagged[0];
+
+        if (is_numeric(strpos($innerhtml, '://'))) { // quick test first
+          $newhtml=qa_html_convert_urls($innerhtml, true);
+
+          $html=substr_replace($html, $newhtml, $htmlunlinked[1]+$thishtmluntagged[1], strlen($innerhtml));
+        }
+      }
+    }
+    return $html;
   }
 }
