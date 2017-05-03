@@ -59,9 +59,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $tmp['textalign'] = '';
         }
         $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
-        $create_date = new DateTime('@'.$message['raw']['created']);
-        $create_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
-        $tmp['created'] = $create_date->format('Y年m月d日');
+        
+        $created_date = qa_when_to_html($message['raw']['created'], 30);
+        if ($created_date['suffix']) {
+          $tmp['created'] = $created_date['data'] . $created_date['suffix'];
+        } else {
+          $tmp_date = new DateTime('@'.$message['raw']['created']);
+          $tmp_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
+          $tmp['created'] = $tmp_date->format('Y年m月d日');
+        }
         $messages[] = $tmp;
       }
       $path = CML_DIR . '/message-template.html';
