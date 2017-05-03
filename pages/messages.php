@@ -81,7 +81,7 @@
     $msgFormat['location'] = $replyLocation;
     $tmp_date = new DateTime($message['created']);
     $create_a = qa_when_to_html($tmp_date->getTimestamp(), 30);
-    if($create_a['suffix']) {
+    if(isset($create_a['suffix']) && !empty($create_a['suffix'])) {
       $msgFormat['create_date'] = $create_a['data'] . $create_a['suffix'];
     } else {
       $msgFormat['create_date'] = $tmp_date->format('Y年m月d日');
