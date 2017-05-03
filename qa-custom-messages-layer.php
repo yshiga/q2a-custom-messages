@@ -59,7 +59,6 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $tmp['textalign'] = '';
         }
         $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
-        
         $created_date = qa_when_to_html($message['raw']['created'], 30);
         if ($created_date['suffix']) {
           $tmp['created'] = $created_date['data'] . $created_date['suffix'];

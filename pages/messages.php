@@ -79,8 +79,13 @@
     $msgFormat['avatarblobid'] = $replyBlobid;
     $msgFormat['handle'] = $replyHandle;
     $msgFormat['location'] = $replyLocation;
-    $create_date = new DateTime($message['created']);
-    $msgFormat['create_date'] = $create_date->format('Y年m月d日');
+    $tmp_date = new DateTime($message['created']);
+    $create_a = qa_when_to_html($tmp_date->getTimestamp(), 30);
+    if($create_a['suffix']) {
+      $msgFormat['create_date'] = $create_a['data'] . $create_a['suffix'];
+    } else {
+      $msgFormat['create_date'] = $tmp_date->format('Y年m月d日');
+    }
     $content = strip_tags($message['content']);
     $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
     $msgFormat['content'] = $content;
