@@ -46,4 +46,52 @@ class cml_db_client
     $sql .= " ORDER BY created DESC";
     return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid, $userid));
   }
+  
+  public static function get_qa_count_days($userid=null, $days=30)
+  {
+    if (!isset($userid)) {
+        $userid = qa_get_logged_in_userid();
+    }
+    
+    if (empty($userid)) {
+        return 0;
+    }
+    
+    $sql = "SELECT count(*)";
+    $sql .= " FROM ^posts";
+    $sql .= " WHERE (type = 'A' OR type = 'Q')";
+    $sql .= " AND userid = $";
+    $sql .= " AND created > DATE_SUB(NOW(), INTERVAL # DAY)";
+      
+    return qa_db_read_one_value(qa_db_query_sub($sql, $userid, $days));
+  }
+  
+  public static function get_blog_count_days($userid=null, $days=30)
+  {
+    if (!isset($userid)) {
+        $userid = qa_get_logged_in_userid();
+    }
+    
+    if (empty($userid)) {
+        return 0;
+    }
+    
+    $sql = "SELECT count(*)";
+    $sql .= " FROM ^blogs";
+    $sql .= " WHERE type = 'B'";
+    $sql .= " AND userid = $";
+    $sql .= " AND created > DATE_SUB(NOW(), INTERVAL # DAY)";
+      
+    return qa_db_read_one_value(qa_db_query_sub($sql, $userid, $days));
+  }
+  
+  public static function check_show_user_message($userid, $days) {
+    $post_count = self::get_qa_count_days($userid, $days);
+    $blog_count = self::get_blog_count_days($userid, $days);
+    if ($post_count > 0 || $blog_count > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
