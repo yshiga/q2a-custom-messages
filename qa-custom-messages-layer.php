@@ -146,6 +146,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       }
     }
     return $html;
+  }
 
   private function output_not_posts() {
     $path = CML_DIR . '/html/not_post_qa_blog.html';
