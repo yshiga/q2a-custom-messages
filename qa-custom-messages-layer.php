@@ -113,6 +113,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
         }
       }
+      qa_html_theme_base::body_footer();
   }
 
   public function form_buttons($form, $columns)
