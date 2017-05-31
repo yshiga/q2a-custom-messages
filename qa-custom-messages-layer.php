@@ -150,8 +150,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
   }
 
   private function output_not_posts() {
+    $msg_temp = qa_lang('custom_messages/not_post_message');
+    $subs = array(
+      '^ask_url' => '/ask',
+      '^root_url' => '/',
+    );
+    $message = strtr($msg_temp, $subs);
     $path = CML_DIR . '/html/not_post_qa_blog.html';
-    $html = file_get_contents($path);
+    $html_temp = file_get_contents($path);
+    $html = strtr($html_temp, array('^message' => $message));
     $this->output($html);
   }
 }
