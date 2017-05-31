@@ -84,7 +84,7 @@
     if(isset($create_a['suffix']) && !empty($create_a['suffix'])) {
       $msgFormat['create_date'] = $create_a['data'] . $create_a['suffix'];
     } else {
-      $msgFormat['create_date'] = $tmp_date->format('Y年m月d日');
+      $msgFormat['create_date'] = $tmp_date->format(qa_lang_html('custom_messages/date_format'));
     }
     $content = strip_tags($message['content']);
     $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
