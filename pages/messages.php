@@ -65,15 +65,21 @@
       $replyBlobid = $message['fromavatarblobid'];
       $replyLocation = $message['fromlocation'];
       $replyFlags = $message['fromflags'];
+      $replyUserid = $message['fromuserid'];
+      $loginFlags = $message['toflags'];
     } else {
       $replyHandle = $message['tohandle'];
       $replyBlobid = $message['toavatarblobid'];
       $replyLocation = $message['tolocation'];
       $replyFlags = $message['toflags'];
+      $replyUserid = $message['touserid'];
+      $loginFlags = $message['fromflags'];
     }
-    if ($replyFlags & QA_USER_FLAGS_NO_MESSAGES) {
-        // プライベートメッセージオフの人は飛ばす
-        continue;
+    // 自分の「相互フォローしていないユーザーからのメッセージも受け取る」オプションがオフで
+    // 相手と相互フォローでない場合は、メッセージリストに表示しない
+    if (($loginFlags & QA_USER_FLAGS_NO_MESSAGES)
+        && !follow_each_other($loginUserId, $replyUserid)) {
+          continue;
     }
     
     $msgFormat['avatarblobid'] = $replyBlobid;
@@ -97,3 +103,18 @@
   $qa_content['page_links'] = qa_html_page_links(qa_request(), $start, $pagesize, $count, qa_opt('pages_prev_next'));
 
   return $qa_content;
+
+  function follow_each_other($loginuserid, $touserid)
+  {
+    $sql = "SELECT COUNT(*)";
+    $sql.= " FROM ^userfavorites";
+    $sql.= " WHERE entitytype = 'U'";
+    $sql.= " AND userid = $";
+    $sql.= " AND entityid = $";
+
+    $following = qa_db_read_one_value(qa_db_query_sub($sql, $loginuserid, $touserid));
+
+    $followed = qa_db_read_one_value(qa_db_query_sub($sql, $touserid, $loginuserid));
+
+    return $following && $followed;
+  }
