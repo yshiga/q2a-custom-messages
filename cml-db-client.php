@@ -11,10 +11,12 @@ class cml_db_client
     $sql .= "SELECT tu.handle AS tohandle,";
     $sql .= " tu.avatarblobid AS toavatarblobid,";
     $sql .= " tu.flags AS toflags,";
+    $sql .= " tu.level AS tolevel,";
     $sql .= " tl.location AS tolocation,";
     $sql .= " fu.handle AS fromhandle,";
     $sql .= " fu.avatarblobid AS fromavatarblobid,";
     $sql .= " fu.flags AS fromflags,";
+    $sql .= " fu.level AS fromlevel,";
     $sql .= " fl.location AS fromlocation,";
     $sql .= " m.*";
     $sql .= " FROM qa_messages m";
