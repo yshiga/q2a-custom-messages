@@ -66,6 +66,7 @@
       $replyLocation = $message['fromlocation'];
       $replyFlags = $message['fromflags'];
       $replyUserid = $message['fromuserid'];
+      $replyUserLevel = $message['fromlevel'];
       $loginFlags = $message['toflags'];
     } else {
       $replyHandle = $message['tohandle'];
@@ -73,12 +74,12 @@
       $replyLocation = $message['tolocation'];
       $replyFlags = $message['toflags'];
       $replyUserid = $message['touserid'];
+      $replyUserLevel = $message['tolevel'];
       $loginFlags = $message['fromflags'];
     }
-    // 自分の「相互フォローしていないユーザーからのメッセージも受け取る」オプションがオフで
-    // 相手と相互フォローでない場合は、メッセージリストに表示しない
-    if (($loginFlags & QA_USER_FLAGS_NO_MESSAGES)
-        && !follow_each_other($loginUserId, $replyUserid)) {
+
+    // メッセージ利用できない場合飛ばす
+    if (!allow_message($loginFlags, $loginUserId, $replyUserid, $replyUserLevel)) {
           continue;
     }
     
@@ -117,4 +118,23 @@
     $followed = qa_db_read_one_value(qa_db_query_sub($sql, $touserid, $loginuserid));
 
     return $following && $followed;
+  }
+
+  /*  
+   * 管理人とはやりとりできる
+   * 自分の「相互フォローしていないユーザーとはメッセージのやりとりをしない」オプションがオンで
+   * 相手と相互フォローでない場合は、メッセージリストに表示しない
+   */
+  function allow_message($loginFlags, $loginUserId, $replyUserId, $replyUserLevel)
+  {
+    if (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN
+        || $replyUserLevel >= QA_USER_LEVEL_ADMIN) {
+      return true;
+    }
+    if (!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)
+        && !follow_each_other($loginUserId, $replyUserId)) {
+      return false;
+    } else {
+      return true;
+    }
   }
