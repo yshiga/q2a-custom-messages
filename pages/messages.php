@@ -79,7 +79,7 @@
     }
 
     // メッセージ利用できない場合飛ばす
-    if (!allow_message($loginFlags, $loginUserId, $replyUserid, $replyUserLevel)) {
+    if (!allow_message($loginFlags, $loginUserId, $replyFlags, $replyUserid, $replyUserLevel)) {
           continue;
     }
     
@@ -122,17 +122,18 @@
 
   /*  
    * 管理人とはやりとりできる
-   * 自分の「相互フォローしていないユーザーとはメッセージのやりとりをしない」オプションがオンで
+   * 自分または相手の「相互フォローしていないユーザーとはメッセージのやりとりをしない」オプションがオンで
    * 相手と相互フォローでない場合は、メッセージリストに表示しない
    */
-  function allow_message($loginFlags, $loginUserId, $replyUserId, $replyUserLevel)
+  function allow_message($loginFlags, $loginUserId, $replyFlags, $replyUserId, $replyUserLevel)
   {
     if (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN
         || $replyUserLevel >= QA_USER_LEVEL_ADMIN) {
       return true;
     }
-    if (!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)
-        && !follow_each_other($loginUserId, $replyUserId)) {
+    if ((!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)
+      || !($replyFlags & QA_USER_FLAGS_NO_MESSAGES))
+      && !follow_each_other($loginUserId, $replyUserId)) {
       return false;
     } else {
       return true;
