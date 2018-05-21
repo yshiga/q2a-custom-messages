@@ -122,20 +122,26 @@
 
   /*  
    * 管理人とはやりとりできる
-   * 自分または相手の「相互フォローしていないユーザーとはメッセージのやりとりをしない」オプションがオンで
+   * 自分または相手の「すべてのユーザーとメッセージをやりとり」オプションがオフで
    * 相手と相互フォローでない場合は、メッセージリストに表示しない
    */
   function allow_message($loginFlags, $loginUserId, $replyFlags, $replyUserId, $replyUserLevel)
   {
+    // 自分、または相手が管理権限であればOK
     if (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN
         || $replyUserLevel >= QA_USER_LEVEL_ADMIN) {
       return true;
     }
-    if ((!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)
-      || !($replyFlags & QA_USER_FLAGS_NO_MESSAGES))
-      && !follow_each_other($loginUserId, $replyUserId)) {
-      return false;
-    } else {
+    // フォローしていれば無条件でOK
+    if (follow_each_other($loginUserId, $replyUserId)) {
       return true;
     }
+
+    $me_ok = !($loginFlags & QA_USER_FLAGS_NO_MESSAGES);
+    $from_ok = !($replyFlags & QA_USER_FLAGS_NO_MESSAGES);
+ 
+    if($me_ok && $from_ok) {
+      return true;
+    }
+    return false;
   }
