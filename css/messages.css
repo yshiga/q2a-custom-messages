@@ -55,6 +55,9 @@
 p.message {
   width: 100%;
 }
+.sub-head {
+    color: rgba(0,0,0,.84);
+}
 
 /* message list */
 .centering__width-640 {
