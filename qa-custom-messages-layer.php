@@ -3,6 +3,14 @@
 require_once CML_DIR.'/cml-db-client.php';
 
 class qa_html_theme_layer extends qa_html_theme_base {
+  public function head_css()
+  {
+    qa_html_theme_base::head_css();
+    if ($this->template === 'messages' || $this->template === 'messages-select-user') {
+      $css_src = CML_RELATIVE_PATH . 'css/messages.css';
+      $this->output('<link rel="stylesheet" href="'.$css_src.'"/>');
+    }
+  }
   public function main_parts($content) {
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages') {
       // $template = file_get_contents(CML_DIR . '/messages-template.html');
@@ -177,13 +185,30 @@ class qa_html_theme_layer extends qa_html_theme_base {
   private function output_user_list()
   {
     $loginFlags = qa_get_logged_in_flags();
-    if (!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)) {
-      $users = qa_path('users', null, qa_opt('site_url'));
-      $header_note = qa_lang_sub('custom_messages/header_note_all', $users);
+    if ($loginFlags & QA_USER_FLAGS_NO_MESSAGES) {
+      $alluser = qa_path('users', null, qa_opt('site_url'));
+      $header_note = qa_lang_sub('custom_messages/header_note_all', $alluser);
     } else {
       $account = qa_path('account', null, qa_opt('site_url'));
       $header_note = qa_lang_sub('custom_messages/header_note', $account);
     }
+    $users = array(
+      array(
+        'handle' => 'user1',
+        'avatarblobid' => '15870457720063752231',
+        'location' => '北海道'
+      ),
+      array(
+        'handle' => 'user2',
+        'avatarblobid' => '15870457720063752231',
+        'location' => '青森'
+      ),
+      array(
+        'handle' => 'user3',
+        'avatarblobid' => '15870457720063752231',
+        'location' => '秋田'
+      ),
+    );
     $path = CML_DIR .'/html/user_list.html';
     include $path;
   }
