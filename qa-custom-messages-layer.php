@@ -30,12 +30,22 @@ class qa_html_theme_layer extends qa_html_theme_base {
   public function page_title_error() {
     $templates = array('messages', 'message');
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && in_array($this->template, $templates) ) {
-  		if (isset($this->content['error']))
-  			$this->error($this->content['error']);
+      if (isset($this->content['error'])) {
+        $this->error($this->content['error']);
+      }
+      $this->output_buttons();
     } else {
       qa_html_theme_base::page_title_error();
     }
 
+  }
+
+  private function output_buttons()
+  {
+    if ($this->template === 'messages') {
+      $path = CML_DIR .'/html/messages-buttons.html';
+      include $path;
+    }
   }
 
   public function message_list_and_form($list)
