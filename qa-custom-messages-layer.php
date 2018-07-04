@@ -22,6 +22,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $this->output_not_posts();
         }
       }
+    } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages-select-user') {
+      $this->output_user_list();
     } else {
       qa_html_theme_base::main_parts($content);
     }
@@ -38,14 +40,6 @@ class qa_html_theme_layer extends qa_html_theme_base {
       qa_html_theme_base::page_title_error();
     }
 
-  }
-
-  private function output_buttons()
-  {
-    if ($this->template === 'messages') {
-      $path = CML_DIR .'/html/messages-buttons.html';
-      include $path;
-    }
   }
 
   public function message_list_and_form($list)
@@ -170,5 +164,27 @@ class qa_html_theme_layer extends qa_html_theme_base {
     $html_temp = file_get_contents($path);
     $html = strtr($html_temp, array('^message' => $message));
     $this->output($html);
+  }
+
+  private function output_buttons()
+  {
+    if ($this->template === 'messages') {
+      $path = CML_DIR .'/html/messages_buttons.html';
+      include $path;
+    }
+  }
+
+  private function output_user_list()
+  {
+    $loginFlags = qa_get_logged_in_flags();
+    if (!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)) {
+      $users = qa_path('users', null, qa_opt('site_url'));
+      $header_note = qa_lang_sub('custom_messages/header_note_all', $users);
+    } else {
+      $account = qa_path('account', null, qa_opt('site_url'));
+      $header_note = qa_lang_sub('custom_messages/header_note', $account);
+    }
+    $path = CML_DIR .'/html/user_list.html';
+    include $path;
   }
 }
