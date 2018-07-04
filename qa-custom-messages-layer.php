@@ -6,7 +6,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
   public function head_css()
   {
     qa_html_theme_base::head_css();
-    if ($this->template === 'messages' || $this->template === 'messages-select-user') {
+    if ($this->template === 'message' ||
+        $this->template === 'messages' ||
+        $this->template === 'messages-select-user') {
       $css_src = CML_RELATIVE_PATH . 'css/messages.css';
       $this->output('<link rel="stylesheet" href="'.$css_src.'"/>');
     }
