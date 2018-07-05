@@ -43,7 +43,7 @@
 
   $state = qa_get_state();
   if ($state === 'user') {
-    return include CML_DIR . '/pages/select_user.php';
+    return include CML_DIR . '/pages/select-user.php';
   }
 
   // get number of messages then actual messages for this page
