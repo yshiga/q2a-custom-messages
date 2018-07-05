@@ -7,6 +7,9 @@
 <div class="sub-head mdl-typography--font-bold margin--top-16px">
     <?php echo qa_lang('custom_messages/select_user'); ?>
 </div>
+<?php if (empty($users)): ?>
+<p> no users</p>
+<?php else: ?>
 <ul class="mdl-list">
     <?php foreach ($users as $user): ?>
     <li class="mdl-list__item">
@@ -26,3 +29,4 @@
     </li>
     <?php endforeach; ?>
 </ul>
+<?php endif; ?>
