@@ -186,31 +186,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   private function output_user_list()
   {
-    $loginFlags = qa_get_logged_in_flags();
-    if ($loginFlags & QA_USER_FLAGS_NO_MESSAGES) {
-      $alluser = qa_path('users', null, qa_opt('site_url'));
-      $header_note = qa_lang_sub('custom_messages/header_note_all', $alluser);
-    } else {
-      $account = qa_path('account', null, qa_opt('site_url'));
-      $header_note = qa_lang_sub('custom_messages/header_note', $account);
-    }
-    $users = array(
-      array(
-        'handle' => 'user1',
-        'avatarblobid' => '15870457720063752231',
-        'location' => '北海道'
-      ),
-      array(
-        'handle' => 'user2',
-        'avatarblobid' => '15870457720063752231',
-        'location' => '青森'
-      ),
-      array(
-        'handle' => 'user3',
-        'avatarblobid' => '15870457720063752231',
-        'location' => '秋田'
-      ),
-    );
+    $header_note = $this->content['list']['note'];
+    $users = $this->content['list']['users'];
     $path = CML_DIR .'/html/user_list.html';
     include $path;
   }

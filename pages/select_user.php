@@ -7,4 +7,46 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 qa_set_template( 'messages-select-user' );
 $qa_content = qa_content_prepare();
 $qa_content['title'] = qa_lang_html( 'custom_messages/messages_page_title' );
+$loginFlags = qa_get_logged_in_flags();
+$header_note = '';
+if ($loginFlags & QA_USER_FLAGS_NO_MESSAGES) {
+    $alluser = qa_path('users', null, qa_opt('site_url'));
+    $header_note = qa_lang_sub('custom_messages/header_note_all', $alluser);
+    $users = array();
+} else {
+    $account = qa_path('account', null, qa_opt('site_url'));
+    $header_note = qa_lang_sub('custom_messages/header_note', $account);
+    $users = select_follow_each_other($loginUserId);
+}
+$qa_content['list'] = array(
+    'note' => $header_note,
+    'users' => $users
+);
 return $qa_content;
+
+
+function select_follow_each_other($userid)
+{
+    $sql = 'SELECT u.userid, handle, avatarblobid,';
+    $sql.= ' content as location';
+    $sql.= ' FROM ^users u';
+    $sql.= ' LEFT JOIN (';
+    $sql.= '     SELECT userid, content';
+    $sql.= '     FROM ^userprofile';
+    $sql.= "     WHERE title like 'location'";
+    $sql.= ' ) p ON u.userid = p.userid';
+    $sql.= ' WHERE u.userid IN (';
+    $sql.= '     SELECT entityid';
+    $sql.= '     FROM ^userfavorites';
+    $sql.= '     WHERE userid = $';
+    $sql.= "     AND entitytype = 'U'";
+    $sql.= '     AND entityid IN (';
+    $sql.= '         SELECT userid';
+    $sql.= '         FROM ^userfavorites';
+    $sql.= '         WHERE entityid = $';
+    $sql.= "         AND entitytype = 'U'";
+    $sql.= '))';
+
+    return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid));
+
+}
