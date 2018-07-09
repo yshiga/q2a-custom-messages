@@ -26,7 +26,7 @@
         {
             qa_set_template( 'groupmsg' );
 
-            return require ARTICLES_DIR . '/pages/group-message.php';
+            return require CML_DIR . '/pages/group-msg.php';
         }
     }
 

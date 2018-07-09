@@ -5,10 +5,14 @@ require_once CML_DIR.'/cml-db-client.php';
 class qa_html_theme_layer extends qa_html_theme_base {
   public function head_css()
   {
+    $allow_template = array(
+      'message',
+      'messages',
+      'messages-select-user',
+      'groupmsg'
+    );
     qa_html_theme_base::head_css();
-    if ($this->template === 'message' ||
-        $this->template === 'messages' ||
-        $this->template === 'messages-select-user') {
+    if (in_array($this->template, $allow_template)) {
       $css_src = CML_RELATIVE_PATH . 'css/messages.css';
       $this->output('<link rel="stylesheet" href="'.$css_src.'"/>');
     }
@@ -22,8 +26,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $path = CML_DIR . '/messages-template.html';
         include $path;
       }
-    } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
+    } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && ($this->template === 'message'
+     || $this->template === 'groupmsg')) {
       if (qa_is_logged_in()) {
+        if ($this->template === 'groupmsg') {
+          $this->output_group_header();
+        }
         $show_ok = cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30);
         $messages = isset($content['message_list']);
         if ($messages || $show_ok) {
@@ -40,7 +48,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
   }
 
   public function page_title_error() {
-    $templates = array('messages', 'message');
+    $templates = array('messages', 'message', 'groupmsg');
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && in_array($this->template, $templates) ) {
       if (isset($this->content['error'])) {
         $this->error($this->content['error']);
@@ -54,14 +62,18 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function message_list_and_form($list)
   {
-    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
+    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME &&
+       ($this->template === 'message'
+       || $this->template === 'groupmsg')) {
       if (strpos(qa_get_state(), 'message-sent') === false) {
           $input_error_msg = qa_lang('custom_messages/messege_input_error');
           $this->output('<div id="content-error" class="mdl-card__supporting-text">');
           $this->output('<span class="mdl-color-text--red">', $input_error_msg, '</span>');
           $this->output('</div>');
       }
-      $this->part_title($list);
+      if ($this->template !== 'groupmsg') {
+        $this->part_title($list);
+      }
 
       $this->error(@$list['error']);
 
@@ -111,7 +123,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function nav($navtype, $level=null)
   {
-    $templates = array('messages', 'message');
+    $templates = array('messages', 'message', 'groupmsg');
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && in_array($this->template, $templates) ) {
       if ($navtype === 'sub') {
         unset($this->content['navigation']['sub']);
@@ -189,6 +201,17 @@ class qa_html_theme_layer extends qa_html_theme_base {
     $header_note = $this->content['list']['note'];
     $users = $this->content['list']['users'];
     $path = CML_DIR .'/html/user_list.html';
+    include $path;
+  }
+
+  private function output_group_header()
+  {
+    $path = CML_DIR . '/html/groupmsg_header.html';
+    $group_chip = qa_lang('custom_messages/groupmsg_chip');
+    $button_leave = qa_lang('custom_messages/leave_button_label');
+    $button_off = qa_lang('custom_messages/off_button_label');
+    $title = $this->content['message_list']['title'];
+    $invite_text = qa_lang('custom_messages/invite_groupmsg');
     include $path;
   }
 }

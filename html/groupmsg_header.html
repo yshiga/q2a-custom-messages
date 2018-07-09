@@ -1,0 +1,32 @@
+<div class="mdl-navigation flex-style">
+    <div class="groupmsg-chip mdl-chip mdl-cell--4-col-phone mdl-cell mdl-typography--text-center">
+        <span class="mdl-chip__text mdl-color-text--black">
+            <?php echo $group_chip; ?>
+        </span>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+    <div class="groupmsg-buttons qa-q-view-buttons">
+    <button type="button" class="mdl-button mdl-js-button mdl-button--icon" id="meta-menu-lower-right-gmsg"><i class="material-icons">more_vert</i></button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="meta-menu-lower-right-gmsg">
+        <li class="mdl-menu__item">
+            <button class="mdl-button" value="<?php echo $button_leave; ?>" >
+                <?php echo $button_leave; ?>
+            </button>
+        </li>
+        <li class="mdl-menu__item">
+            <button class="mdl-button" value="<?php echo $button_off; ?>" >
+                <?php echo $button_off; ?>
+            </button>
+        </li>
+    </ul>
+    </div>
+</div>
+<h2 class="mdl-typography--title-color-contrast mdl-typography--font-bold">
+    <?php echo $title; ?>
+</h2>
+<div class="groupmsg-invite">
+    <a href="">
+        <i class="material-icons">keyboard_arrow_right</i>
+        <?php echo $invite_text; ?>
+    </a>
+</div>
