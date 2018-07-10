@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `^msg_group_messages` (
-  `messageid` int(10) unsigned UNIQUE NOT NULL,
+  `messageid` int(10) unsigned UNIQUE NOT NULL AUTO_INCREMENT,
   `groupid` int(10) unsigned NOT NULL,
   `userid` int(10) unsigned NOT NULL,
 	`content` VARCHAR(8000) NULL DEFAULT NULL,
