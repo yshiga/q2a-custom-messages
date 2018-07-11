@@ -1,0 +1,38 @@
+<div class="mdl-typography--title mdl-typography--font-bold margin--top-16px">
+    <?php echo qa_lang('custom_messages/msg_destination'); ?>
+</div>
+<p class="mdl-typography--font-bold margin--top-16px">
+    <?php echo $header_note; ?>
+</p>
+<div class="sub-head mdl-typography--font-bold margin--top-16px">
+    <?php echo qa_lang('custom_messages/select_user'); ?>
+</div>
+<?php if (empty($users)): ?>
+<p> no users</p>
+<?php else: ?>
+<form action="<?php echo qa_path('groupmsg', null, qa_opt('site_url')); ?>" method="POST">
+    <input type="submit" value="グループを作成">
+    <ul class="mdl-list">
+        <?php foreach ($users as $user): ?>
+        <li class="mdl-list__item">
+            <label for="<?php echo $user['userid']; ?>" style="display: contents">
+            <span class="mdl-list__item-primary-content item-avatar">
+                <img src="../?qa=image&amp;qa_blobid=<?php echo $user['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+            </span>
+            <span class="mdl-list__item-secondary-content item-content">
+                <div class="mdl-typography--subhead">
+                <?php echo $user['handle']; ?>　
+                </div>
+                <p class="message mdl-list__item-text-body mdl-typography--body-color-contrast">
+                <span class="mdl-chip__text"><span class="mdl-typography--font-bold"><?php echo qa_lang_html('custom_messages/location'); ?></span>：<?php echo $user['location']; ?>　　</span>
+                </p>
+            </span>
+            </label>
+            <span>
+                <input type="checkbox" name="userids[]" id="<?php echo $user['userid'] ?>" value="<?php echo $user['userid']; ?>">
+            </span>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</form>
+<?php endif; ?>
