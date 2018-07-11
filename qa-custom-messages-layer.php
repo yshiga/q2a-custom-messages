@@ -9,6 +9,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       'message',
       'messages',
       'messages-select-user',
+      'messages-select-group',
       'groupmsg'
     );
     qa_html_theme_base::head_css();
@@ -18,7 +19,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
     }
   }
   public function main_parts($content) {
-    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages') {
+    $current_theme = qa_opt('site_theme');
+    if ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages') {
       // $template = file_get_contents(CML_DIR . '/messages-template.html');
       // $this->output($template);
       if (qa_is_logged_in()) {
@@ -26,7 +28,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $path = CML_DIR . '/messages-template.html';
         include $path;
       }
-    } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && ($this->template === 'message'
+    } elseif ($current_theme === CML_TARGET_THEME_NAME && ($this->template === 'message'
      || $this->template === 'groupmsg')) {
       if (qa_is_logged_in()) {
         if ($this->template === 'groupmsg') {
@@ -40,8 +42,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $this->output_not_posts();
         }
       }
-    } elseif (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages-select-user') {
+    } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-user') {
       $this->output_user_list();
+    } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group') {
+      $this->output_select_group();
     } else {
       qa_html_theme_base::main_parts($content);
     }
@@ -62,9 +66,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function message_list_and_form($list)
   {
-    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME &&
-       ($this->template === 'message'
-       || $this->template === 'groupmsg')) {
+    if (qa_opt('site_theme') === CML_TARGET_THEME_NAME
+        && ($this->template === 'message'
+        || $this->template === 'groupmsg')) {
       if (strpos(qa_get_state(), 'message-sent') === false) {
           $input_error_msg = qa_lang('custom_messages/messege_input_error');
           $this->output('<div id="content-error" class="mdl-card__supporting-text">');
@@ -83,32 +87,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $this->message_list_form($list);
       }
 
-      $messages = array();
-      $loginuserhandle = qa_get_logged_in_handle();
-      foreach ($list['messages'] as $message) {
-        $tmp = array();
-        $content = $this->get_html($message['raw']['content']); 
-        // $content = $message['raw']['content'];
-        $tmp['content'] = $this->medium_editor_embed_replace($content);
-        if ($message['raw']['fromhandle'] === $loginuserhandle) {
-          $tmp['status'] = 'sent';
-          $tmp['color'] = 'mdl-color--orange-100';
-          $tmp['textalign'] = 'style="text-align: right;"';
-        } else {
-          $tmp['status'] = 'received';
-          $tmp['color'] = 'mdl-color--grey-50';
-          $tmp['textalign'] = '';
-        }
-        $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
-        $created_date = qa_when_to_html($message['raw']['created'], 30);
-        if (isset($created_date['suffix']) && !empty($created_date['suffix'])) {
-          $tmp['created'] = $created_date['data'] . $created_date['suffix'];
-        } else {
-          $tmp_date = new DateTime('@'.$message['raw']['created']);
-          $tmp_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
-          $tmp['created'] = $tmp_date->format('Y年m月d日');
-        }
-        $messages[] = $tmp;
+      if ($this->template === 'messages') {
+        $messages = $this->get_messages($list['messages']);
+      } elseif ($this->template === 'groupmsg') {
+        $messages = $list['messages'];
       }
       $path = CML_DIR . '/message-template.html';
       include $path;
@@ -119,6 +101,38 @@ class qa_html_theme_layer extends qa_html_theme_base {
     } else {
       qa_html_theme_base::message_list_and_form($list);
     }
+  }
+
+  private function get_messages($messages)
+  {
+    $ret = array();
+    $loginuserhandle = qa_get_logged_in_handle();
+    foreach ($messages as $message) {
+      $tmp = array();
+      $content = $this->get_html($message['raw']['content']); 
+      // $content = $message['raw']['content'];
+      $tmp['content'] = $this->medium_editor_embed_replace($content);
+      if ($message['raw']['fromhandle'] === $loginuserhandle) {
+        $tmp['status'] = 'sent';
+        $tmp['color'] = 'mdl-color--orange-100';
+        $tmp['textalign'] = 'style="text-align: right;"';
+      } else {
+        $tmp['status'] = 'received';
+        $tmp['color'] = 'mdl-color--grey-50';
+        $tmp['textalign'] = '';
+      }
+      $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
+      $created_date = qa_when_to_html($message['raw']['created'], 30);
+      if (isset($created_date['suffix']) && !empty($created_date['suffix'])) {
+        $tmp['created'] = $created_date['data'] . $created_date['suffix'];
+      } else {
+        $tmp_date = new DateTime('@'.$message['raw']['created']);
+        $tmp_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
+        $tmp['created'] = $tmp_date->format('Y年m月d日');
+      }
+      $ret[] = $tmp;
+    }
+    return $ret;
   }
 
   public function nav($navtype, $level=null)
@@ -207,11 +221,19 @@ class qa_html_theme_layer extends qa_html_theme_base {
   private function output_group_header()
   {
     $path = CML_DIR . '/html/groupmsg_header.html';
-    $group_chip = qa_lang('custom_messages/groupmsg_chip');
+    $group_chip = $this->content['message_list']['chip'];
     $button_leave = qa_lang('custom_messages/leave_button_label');
     $button_off = qa_lang('custom_messages/off_button_label');
     $title = $this->content['message_list']['title'];
     $invite_text = qa_lang('custom_messages/invite_groupmsg');
+    include $path;
+  }
+
+  private function output_select_group()
+  {
+    $header_note = $this->content['list']['note'];
+    $users = $this->content['list']['users'];
+    $path = CML_DIR .'/html/select_group.html';
     include $path;
   }
 }
