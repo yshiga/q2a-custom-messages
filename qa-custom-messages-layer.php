@@ -87,10 +87,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $this->message_list_form($list);
       }
 
-      if ($this->template === 'messages') {
+      if ($this->template === 'message') {
         $messages = $this->get_messages($list['messages']);
       } elseif ($this->template === 'groupmsg') {
-        $messages = $list['messages'];
+        $messages = $this->get_group_messages($list['messages']);
       }
       $path = CML_DIR . '/message-template.html';
       include $path;
@@ -127,6 +127,37 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $tmp['created'] = $created_date['data'] . $created_date['suffix'];
       } else {
         $tmp_date = new DateTime('@'.$message['raw']['created']);
+        $tmp_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
+        $tmp['created'] = $tmp_date->format('Y年m月d日');
+      }
+      $ret[] = $tmp;
+    }
+    return $ret;
+  }
+
+  public function get_group_messages($messages)
+  {
+    $ret = array();
+    $loginuserhandle = qa_get_logged_in_handle();
+    foreach ($messages as $message) {
+      $tmp = array();
+      $raw = $message['raw'];
+      $content = $this->get_html($message['content']); 
+      $tmp['content'] = $this->medium_editor_embed_replace($content);
+      if ($raw['handle'] === $loginuserhandle) {
+        $tmp['status'] = 'sent';
+        $tmp['color'] = 'mdl-color--orange-100';
+        $tmp['textalign'] = 'style="text-align: right;"';
+      } else {
+        $tmp['status'] = 'received';
+        $tmp['color'] = 'mdl-color--grey-50';
+        $tmp['textalign'] = '';
+      }
+      $tmp['avatarblobid'] = $raw['avatarblobid'];
+      if (isset($message['when']['suffix']) && !empty($message['when']['suffix'])) {
+        $tmp['created'] = $message['when']['data'] . $message['when']['suffix'];
+      } else {
+        $tmp_date = new DateTime('@'.$raw['created']);
         $tmp_date->setTimeZone( new DateTimeZone('Asia/Tokyo'));
         $tmp['created'] = $tmp_date->format('Y年m月d日');
       }
