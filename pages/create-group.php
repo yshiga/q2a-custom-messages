@@ -16,8 +16,7 @@ $userids[] = qa_get_logged_in_userid();
 // グループの存在チェック
 $ret = msg_groups::already_existing($userids);
 if ($ret) {
-    $url = qa_path('groupmsg/'.$ret, null, qa_opt('site_url'));
-    error_log('DEBUG: group exiists :' . $ret);
+    $url = 'groupmsg/'.$ret;
 } else {
     $gcount = msg_groups::get_groups_count();
 
@@ -34,10 +33,8 @@ if ($ret) {
         }
         $group->add_user($userid, $join);
     }
-    $url = qa_path('groupmsg/'.$group->groupid, null, qa_opt('site_url'));
-    error_log('DEBUG: new group :' . $group-groupid);
+    $url = 'groupmsg/'.$group->groupid;
 }
-
-qa_redirect($url);
+qa_redirect($url, null, qa_opt('site_url'));
 
 return null;
