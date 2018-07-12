@@ -11,7 +11,8 @@ if(empty($userids)) {
     qa_redirect('messages');
 }
 
-$userids[] = qa_get_logged_in_userid();
+$loginuserid = qa_get_logged_in_userid();
+$userids[] = $loginuserid;
 
 // グループの存在チェック
 $ret = msg_groups::already_existing($userids);
@@ -26,15 +27,24 @@ if ($ret) {
     $group->create();
 
     foreach ($userids as $userid) {
-        if ($userid === qa_get_logged_in_userid()) {
+        if ($userid === $loginuserid) {
             $join = $group::GROUP_MSG_JOIN;
         } else {
             $join = $group::GROUP_MSG_INVITE;
         }
         $group->add_user($userid, $join);
+        
+        if ($userid !== $loginuserid) {
+            qa_report_event('g_invite', $loginuserid, qa_get_logged_in_handle(), qa_cookie_get(),
+            array(
+                'groupid' => $groupid,
+                'userid' => $userid
+            ));
+        }
     }
     $url = 'groupmsg/'.$group->groupid;
 }
+error_log('DEBUG create or exists group url: '.$url);
 qa_redirect($url, null, qa_opt('site_url'));
 
 return null;

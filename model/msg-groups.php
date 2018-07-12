@@ -39,8 +39,8 @@ class msg_groups
             'INSERT INTO ^msg_groups (title, created) VALUES ($, NOW())',
             $this->title
         );
-        $this->id = qa_db_last_insert_id();
-        return $this->id;
+        $this->groupid = qa_db_last_insert_id();
+        return $this->groupid;
     }
 
     public function delete()
@@ -52,7 +52,7 @@ class msg_groups
     {
         qa_db_query_sub(
             'INSERT INTO ^msg_group_users (`groupid`, `userid`, `join`, `notify`) VALUES (#, #, #, #)',
-            $this->id, $userid, $join, self::GROUP_NOTIFY_OFF
+            $this->groupid, $userid, $join, self::GROUP_NOTIFY_OFF
         );
         return qa_db_last_insert_id();
     }
@@ -107,7 +107,7 @@ class msg_groups
         $groupids = self::get_groups_by_usercount($count);
 
         foreach ($groupids as $groupid) {
-            $groupusers = self::get_group_join_users($groupid);
+            $groupusers = self::get_group_all_users($groupid);
             $result = array_diff($userids, $groupusers);
             if (empty($result)) {
                 return $groupid;
