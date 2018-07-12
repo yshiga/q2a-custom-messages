@@ -37,14 +37,13 @@ if ($ret) {
         if ($userid !== $loginuserid) {
             qa_report_event('g_invite', $loginuserid, qa_get_logged_in_handle(), qa_cookie_get(),
             array(
-                'groupid' => $groupid,
+                'groupid' => $group->groupid,
                 'userid' => $userid
             ));
         }
     }
     $url = 'groupmsg/'.$group->groupid;
 }
-error_log('DEBUG create or exists group url: '.$url);
 qa_redirect($url, null, qa_opt('site_url'));
 
 return null;
