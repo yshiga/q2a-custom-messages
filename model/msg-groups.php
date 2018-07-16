@@ -43,11 +43,6 @@ class msg_groups
         return $this->groupid;
     }
 
-    public function delete()
-    {
-
-    }
-
     public function add_user($userid, $join)
     {
         qa_db_query_sub(
@@ -57,14 +52,22 @@ class msg_groups
         return qa_db_last_insert_id();
     }
 
-    public function remove_user()
+    public function remove_user($userid)
     {
-
+        qa_db_query_sub(
+            'DELETE FROM ^msg_group_users WHERE groupid = # AND userid = #',
+            $this->groupid, $userid
+        );
+        return;
     }
 
-    public function update_user()
+    public function update_user($userid, $join)
     {
-
+        qa_db_query_sub(
+            'UPDATE ^msg_group_users SET `join` = # WHERE groupid = # AND userid = #',
+            $join, $this->groupid, $userid
+        );
+        return;
     }
 
 
@@ -80,6 +83,11 @@ class msg_groups
     public function allow_browse($userid)
     {
         return in_array($userid, $this->join_users);
+    }
+
+    public function is_invited($userid)
+    {
+        return in_array($userid, $this->all_users);
     }
 
     public static function get_group_join_users($groupid)
