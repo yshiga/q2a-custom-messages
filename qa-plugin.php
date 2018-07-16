@@ -32,3 +32,4 @@ qa_register_plugin_layer('qa-custom-messages-layer.php','Custom Message List Lay
 qa_register_plugin_overrides('qa-custom-messages-overrides.php');
 // page
 qa_register_plugin_module('page', 'qa-group-message-page.php', 'qa_group_message_page', 'Group Message Page');
+qa_register_plugin_module('page', 'qa-group-invitation-page.php', 'qa_group_invitation_page', 'Group Invitation Page');
