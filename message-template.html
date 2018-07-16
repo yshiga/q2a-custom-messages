@@ -1,11 +1,11 @@
 <div class="centering__width-640 mdl-card mdl-cell mdl-cell--12-col margin--top-16px padding--16px">
-    <?php foreach ($messages as $message): ?>
     <div class="messages">
+    <?php foreach ($messages as $message): ?>
       <div class="message-container <?php echo $message['status']; ?>">
           <div class="avatar">
             <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
           </div>
-          <div class="message">
+          <div class="message" id="m<?php echo $message['messageid']; ?>">
             <div class="<?php echo $message['color']; ?> ballon padding--16px">
                 <?php echo $message['content']; ?>
             </div>
