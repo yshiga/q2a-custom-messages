@@ -78,13 +78,14 @@ if (qa_post_text('domessage')) {
             } else {
                 $messageid = null;
             }
-
             $messagesent = true;
 
+            $join_users = array_diff($current_group->join_users, array($loginuserid));
             qa_report_event('g_message', $loginuserid, qa_get_logged_in_handle(), qa_cookie_get(), array(
                 'groupid' => $groupid,
                 'messageid' => $messageid,
                 'message' => $inmessage,
+                'join_users' => $join_users
             ));
 
             // show message as part of general history
