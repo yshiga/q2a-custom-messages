@@ -41,6 +41,13 @@
   $start = qa_get_start();
   $pagesize = qa_opt('page_size_pms');
 
+  $state = qa_get_state();
+  if ($state === 'user') {
+    return include CML_DIR . '/pages/select-user.php';
+  } elseif ($state === 'group') {
+    return include CML_DIR . '/pages/select-group.php';
+  }
+
   // get number of messages then actual messages for this page
   $userMessages = cml_db_client::get_user_messages($loginUserId);
   $count = count($userMessages);

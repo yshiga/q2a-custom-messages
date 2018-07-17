@@ -22,9 +22,14 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 @define( 'CML_TARGET_THEME_NAME', 'q2a-material-lite');
 @define( 'CML_RELATIVE_PATH', '../qa-plugin/'.CML_FOLDER.'/');
 
+// install
+qa_register_plugin_module('event', 'install/qa-custom-messages-install.php', 'q2a_custom_messages_install', 'Custom Messages Install');
 // language file
 qa_register_plugin_phrases('qa-custom-messages-lang-*.php', 'custom_messages');
 // layer
 qa_register_plugin_layer('qa-custom-messages-layer.php','Custom Message List Layer');
 // overrides
 qa_register_plugin_overrides('qa-custom-messages-overrides.php');
+// page
+qa_register_plugin_module('page', 'qa-group-message-page.php', 'qa_group_message_page', 'Group Message Page');
+qa_register_plugin_module('page', 'qa-group-invitation-page.php', 'qa_group_invitation_page', 'Group Invitation Page');

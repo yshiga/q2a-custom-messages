@@ -1,11 +1,11 @@
 <div class="centering__width-640 mdl-card mdl-cell mdl-cell--12-col margin--top-16px padding--16px">
-    <?php foreach ($messages as $message): ?>
     <div class="messages">
+    <?php foreach ($messages as $message): ?>
       <div class="message-container <?php echo $message['status']; ?>">
           <div class="avatar">
             <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
           </div>
-          <div class="message">
+          <div class="message" id="m<?php echo $message['messageid']; ?>">
             <div class="<?php echo $message['color']; ?> ballon padding--16px">
                 <?php echo $message['content']; ?>
             </div>
@@ -16,51 +16,3 @@
     </div>
 
 </div>
-<style media="screen">
-  .centering__width-640 {
-    overflow: auto;
-  }
-  .message-input form {
-    display: flex;
-    align-items: center;
-  }
-  .message-input form .mdl-textfield {
-    flex-basis: 88%;
-    margin-right: auto;
-  }
-  .message-container{
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 24px;
-  }
-
-  .message-container.sent{
-    flex-direction: row-reverse;
-  }
-  .message-container.sent .message {
-    /*display: flex;*/
-    flex-direction: column;
-  }
-  .message-container .avatar {
-    margin: 16px;
-  }
-  .message-container .message .ballon {
-    border-radius: 8px;
-    font-size: 16px;
-    line-height: 24px;
-    color: #111;
-  }
-  @media (max-width:375px){
-    .message-container .avatar {
-      margin: 0 16px 0 0;
-    }
-    .message-container.sent .avatar {
-      margin: 0 0 0 16px;
-    }
-    .message-container .avatar img {
-      width: 30px;
-      height: auto;
-    }
-  }
-</style>

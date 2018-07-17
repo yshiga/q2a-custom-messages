@@ -1,0 +1,115 @@
+/* user list */
+.mdl-list__item .item-link {
+  width: 100%;
+}
+.mdl-list__item .item-avatar {
+  width: 15%;
+}
+.mdl-list__item .item-content {
+  width: 85%;
+}
+.mdl-card__supporting-text {
+  width: auto;
+  overflow: auto;
+}
+.mdl-list__item {
+  border-top: 1px solid #ccc;
+  padding: 0;
+}
+.mdl-list__item a {
+  color: #ababab;
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+}
+.mdl-list__item a:hover {
+  text-decoration: none;
+  background-color: #efefef;
+}
+.mdl-list__item .mdl-list__item-secondary-content{
+  align-items: baseline;
+}
+.mdl-list__item .mdl-typography--subhead{
+  color: #333;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+}
+@media (max-width:769px) {
+  .mdl-list__item .mdl-typography--subhead{
+    flex-direction: column;
+  }
+}
+@media (max-width:414px) {
+  .mdl-list__item .mdl-list__item-primary-content img{
+    width: 30px;
+    height: auto;
+  }
+  .mdl-list__item a {
+    padding: 16px 0;
+  }
+}
+.mdl-list__item .mdl-typography--subhead .mdl-chip__text{
+  margin-right: auto;
+}
+p.message {
+  width: 100%;
+}
+.sub-head {
+    color: rgba(0,0,0,.84);
+}
+
+/* message list */
+.groupmsg-chip {
+  margin: 0;
+}
+.groupmsg-invite a {
+  vertical-align: top;
+  line-height: 1.9em;
+}
+.centering__width-640 {
+overflow: auto;
+}
+.message-input form {
+display: flex;
+align-items: center;
+}
+.message-input form .mdl-textfield {
+flex-basis: 88%;
+margin-right: auto;
+}
+.message-container{
+display: flex;
+align-items: flex-start;
+width: 100%;
+margin-bottom: 24px;
+}
+
+.message-container.sent{
+flex-direction: row-reverse;
+}
+.message-container.sent .message {
+/*display: flex;*/
+flex-direction: column;
+}
+.message-container .avatar {
+margin: 16px;
+}
+.message-container .message .ballon {
+border-radius: 8px;
+font-size: 16px;
+line-height: 24px;
+color: #111;
+}
+@media (max-width:375px){
+    .message-container .avatar {
+        margin: 0 16px 0 0;
+    }
+    .message-container.sent .avatar {
+        margin: 0 0 0 16px;
+    }
+    .message-container .avatar img {
+        width: 30px;
+        height: auto;
+    }
+}
