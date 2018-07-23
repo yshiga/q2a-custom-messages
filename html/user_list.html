@@ -7,11 +7,28 @@
 <div class="sub-head mdl-typography--font-bold margin--top-16px">
     <?php echo qa_lang('custom_messages/select_user'); ?>
 </div>
-<?php if (empty($users)): ?>
+<?php if (empty($users) && empty($users2)): ?>
 <p> no users</p>
 <?php else: ?>
 <ul class="mdl-list">
     <?php foreach ($users as $user): ?>
+    <li class="mdl-list__item">
+        <a href="<?php echo qa_path('message/'.$user['handle'], null, qa_opt('site_uerl')); ?>" class="item-link">
+        <span class="mdl-list__item-primary-content item-avatar">
+            <img src="../?qa=image&amp;qa_blobid=<?php echo $user['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
+        </span>
+        <span class="mdl-list__item-secondary-content item-content">
+            <div class="mdl-typography--subhead">
+            <?php echo $user['handle']; ?>　
+            </div>
+            <p class="message mdl-list__item-text-body mdl-typography--body-color-contrast">
+            <span class="mdl-chip__text"><span class="mdl-typography--font-bold"><?php echo qa_lang_html('custom_messages/location'); ?></span>：<?php echo $user['location']; ?>　　</span>
+            </p>
+        </span>
+        </a>
+    </li>
+    <?php endforeach; ?>
+    <?php foreach ($users2 as $user): ?>
     <li class="mdl-list__item">
         <a href="<?php echo qa_path('message/'.$user['handle'], null, qa_opt('site_uerl')); ?>" class="item-link">
         <span class="mdl-list__item-primary-content item-avatar">

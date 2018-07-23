@@ -247,6 +247,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
   {
     $header_note = $this->content['list']['note'];
     $users = $this->content['list']['users'];
+    $users2 = $this->content['list']['users2'];
     $path = CML_DIR .'/html/user_list.html';
     include $path;
   }
