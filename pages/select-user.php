@@ -9,7 +9,7 @@ $qa_content = qa_content_prepare();
 $qa_content['title'] = qa_lang_html( 'custom_messages/messages_page_title' );
 $loginFlags = qa_get_logged_in_flags();
 $header_note = '';
-if ($loginFlags & QA_USER_FLAGS_NO_MESSAGES) {
+if (!($loginFlags & QA_USER_FLAGS_NO_MESSAGES)) {
     $alluser = qa_path('users', null, qa_opt('site_url'));
     $header_note = qa_lang_sub('custom_messages/header_note_all', $alluser);
     $users = cml_db_client::select_interaction_users($loginUserId);
