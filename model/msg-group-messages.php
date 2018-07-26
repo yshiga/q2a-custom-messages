@@ -100,7 +100,7 @@ class msg_group_messages
         $sql.= " ON gm.created = gm2.maxdate";
         $sql.= " WHERE groupid IN (";
         $sql.= " SELECT groupid";
-        $sql.= " FROM ^msg_group_messages";
+        $sql.= " FROM ^msg_group_users";
         $sql.= " WHERE userid = #";
         $sql.= " )";
         $sql.= " ORDER BY created DESC";

@@ -10,6 +10,7 @@
   require_once QA_INCLUDE_DIR.'app/format.php';
   require_once QA_INCLUDE_DIR.'app/limits.php';
   require_once CML_DIR.'/cml-db-client.php';
+  require_once CML_DIR.'/model/msg-groups.php';
   require_once CML_DIR.'/model/msg-group-messages.php';
 
   $loginUserId = qa_get_logged_in_userid();
@@ -117,9 +118,18 @@
   
   foreach ($gmessages as $message) {
     $msgFormat = array();
+    $groupid = $message['groupid'];
+    $cur_group = new msg_groups($groupid);
 
     $msgFormat['avatarblobid'] = CML_RELATIVE_PATH.'images/group_icon.png';
-    $msgFormat['handle'] = '';
+    $usercount = '('.count($cur_group->join_users).')';
+    if (empty($cur_group->title)) {
+      $title = qa_lang_sub('custom_messages/group_users', $cur_group->get_group_handles());
+      $title.= $usercount;
+    } else {
+      $title = $cur_group->title . $usercount;
+    }
+    $msgFormat['handle'] = $title;
     $msgFormat['location'] = '';
     $tmp_date = new DateTime($message['created']);
     $create_a = qa_when_to_html($tmp_date->getTimestamp(), 30);
@@ -131,7 +141,7 @@
     $content = strip_tags($message['content']);
     $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
     $msgFormat['content'] = $content;
-    $msgFormat['messageurl'] = qa_path_html('groupmsg/'.$message['groupid'],null, qa_opt('site_url'));
+    $msgFormat['messageurl'] = qa_path_html('groupmsg/'.$groupid, null, qa_opt('site_url'));
     $msgFormat['type'] = 'group';
     // ソートのための値
     $sort[] = $message['created'];

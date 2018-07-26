@@ -22,6 +22,7 @@
     'off_button_label' => '通知をオフにする',
     'groupmsg_chip' => 'チャットグループ',
     'invite_groupmsg' => '会話に新しいユーザーを招待',
+    'group_users' => '^さん',
   );
 
 /*

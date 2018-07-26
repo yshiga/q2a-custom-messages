@@ -113,3 +113,10 @@ color: #111;
         height: auto;
     }
 }
+
+i.material-icons.group-titles {
+  position: relative;
+  top: 8px;
+  margin-right: 10px;
+  color: rgb(255,152,0);
+}

@@ -139,4 +139,15 @@ class msg_groups
 
         return qa_db_read_all_values(qa_db_query_sub($sql, $count));
     }
+
+    public function get_group_handles()
+    {
+        $handles = array();
+        $len = 0;
+        foreach ($this->join_users as $userid) {
+            $tmp = qa_userid_to_handle($userid);
+            $handles[] = $tmp;
+        }
+        return implode('、', $handles);
+    }
 }
