@@ -10,6 +10,7 @@
   require_once QA_INCLUDE_DIR.'app/format.php';
   require_once QA_INCLUDE_DIR.'app/limits.php';
   require_once CML_DIR.'/cml-db-client.php';
+  require_once CML_DIR.'/model/msg-group-messages.php';
 
   $loginUserId = qa_get_logged_in_userid();
   $loginUserHandle = qa_get_logged_in_handle();
@@ -64,7 +65,8 @@
     'messages' => array(),
   );
 
-
+  $messages = array();
+  $sort = array();
   foreach ($userMessages as $message) {
     $msgFormat = array();
     if ($loginUserId === $message['touserid']) {
@@ -103,10 +105,43 @@
     $content = strip_tags($message['content']);
     $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
     $msgFormat['content'] = $content;
-    $msgFormat['messageurl'] = qa_path_html('message/'.$replyHandle);    
+    $msgFormat['messageurl'] = qa_path_html('message/'.$replyHandle);
+    $msgFormat['type'] = 'user';
+    // ソートのための値
+    $sort[] = $message['created'];
 
-    $qa_content['message_list']['messages'][] = $msgFormat;
+    $messages[] = $msgFormat;
   }
+  
+  $gmessages = msg_group_messages::get_recent_groups_by_user($loginUserId);
+  
+  foreach ($gmessages as $message) {
+    $msgFormat = array();
+
+    $msgFormat['avatarblobid'] = CML_RELATIVE_PATH.'images/group_icon.png';
+    $msgFormat['handle'] = '';
+    $msgFormat['location'] = '';
+    $tmp_date = new DateTime($message['created']);
+    $create_a = qa_when_to_html($tmp_date->getTimestamp(), 30);
+    if(isset($create_a['suffix']) && !empty($create_a['suffix'])) {
+      $msgFormat['create_date'] = $create_a['data'] . $create_a['suffix'];
+    } else {
+      $msgFormat['create_date'] = $tmp_date->format(qa_lang_html('custom_messages/date_format'));
+    }
+    $content = strip_tags($message['content']);
+    $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
+    $msgFormat['content'] = $content;
+    $msgFormat['messageurl'] = qa_path_html('groupmsg/'.$message['groupid'],null, qa_opt('site_url'));
+    $msgFormat['type'] = 'group';
+    // ソートのための値
+    $sort[] = $message['created'];
+    $messages[] = $msgFormat;
+  }
+  
+  // created で降順にソート
+  array_multisort($sort, SORT_DESC, $messages);
+
+  $qa_content['message_list']['messages'] = $messages;
 
   $qa_content['page_links'] = qa_html_page_links(qa_request(), $start, $pagesize, $count, qa_opt('pages_prev_next'));
 

@@ -86,4 +86,25 @@ class msg_group_messages
     //	That's it!
         return $fields;
     }
+    
+    public static function get_recent_groups_by_user($userid)
+    {
+        $sql = "";
+        $sql.= "SELECT gm.userid, gm.groupid, gm.content, gm.created";
+        $sql.= " FROM ^msg_group_messages gm";
+        $sql.= " INNER JOIN (";
+        $sql.= " SELECT MAX(created) AS maxdate";
+        $sql.= " FROM ^msg_group_messages";
+        $sql.= " GROUP BY groupid";
+        $sql.= " ) AS gm2";
+        $sql.= " ON gm.created = gm2.maxdate";
+        $sql.= " WHERE groupid IN (";
+        $sql.= " SELECT groupid";
+        $sql.= " FROM ^msg_group_messages";
+        $sql.= " WHERE userid = #";
+        $sql.= " )";
+        $sql.= " ORDER BY created DESC";
+        
+        return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid));
+    }
 }
