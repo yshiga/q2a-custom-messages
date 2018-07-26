@@ -161,13 +161,10 @@ if (qa_opt('show_message_history')) {
 
     $showmessages = array_slice(array_reverse($recent, true), $start, $pagesize);
 
-    if (!empty($current_group->title)) {
-        $qa_content['message_list']['chip'] = $current_group->title;
-    } else {
-        $qa_content['message_list']['chip'] = 'グループチャット';
-    }
+    $qa_content['message_list']['chip'] = qa_lang('custom_messages/groupmsg_chip');
+
     $handles = array();
-    foreach($current_group->join_users as $userid) {
+    foreach($current_group->all_users as $userid) {
         $handles[]= qa_userid_to_handle($userid);
     }
     $handlelinks = array();
