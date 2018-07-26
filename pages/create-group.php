@@ -23,7 +23,7 @@ if ($ret) {
 
     $group = new msg_groups();
 
-    $group->title = 'グループチャット '.++$gcount;
+    $group->title = '';
     $group->create();
 
     foreach ($userids as $userid) {

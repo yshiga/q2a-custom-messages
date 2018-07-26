@@ -16,7 +16,7 @@ class msg_groups
 
     public function __construct($groupid=null)
     {
-        $this->title = 'グループチャット';
+        $this->title = null;
         $this->groupid = null;
         $this->created = null;
         $this->join_users = array();
