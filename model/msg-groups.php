@@ -16,7 +16,7 @@ class msg_groups
 
     public function __construct($groupid=null)
     {
-        $this->title = 'グループチャット';
+        $this->title = null;
         $this->groupid = null;
         $this->created = null;
         $this->join_users = array();
@@ -138,5 +138,22 @@ class msg_groups
         $sql.= " HAVING count(userid) = #";
 
         return qa_db_read_all_values(qa_db_query_sub($sql, $count));
+    }
+
+    public function get_group_handles($login_userid)
+    {
+        $handles = array();
+        $len = 0;
+        foreach ($this->all_users as $userid) {
+            if ($userid === $login_userid) {
+                continue;
+            }
+            $tmp = qa_userid_to_handle($userid);
+            $len += mb_strlen($tmp, 'UTF-8');
+            if ($len <= 20) {
+                $handles[] = $tmp;
+            }
+        }
+        return implode('、', $handles);
     }
 }

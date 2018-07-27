@@ -20,8 +20,9 @@
     'select_user' => 'メッセージを送りたいユーザーを選択してください',
     'leave_button_label' => 'グループから退室',
     'off_button_label' => '通知をオフにする',
-    'groupmsg_chip' => 'チャットグループ',
+    'groupmsg_chip' => 'グループチャット',
     'invite_groupmsg' => '会話に新しいユーザーを招待',
+    'group_users' => '^さん',
   );
 
 /*
