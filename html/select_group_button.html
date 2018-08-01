@@ -4,23 +4,55 @@
     </button>
 </div>
 
+<!-- dialog-->
+<dialog class="mdl-dialog" id="group-error-dialog">
+  <h3 class="mdl-dialog__title" id="dialog-title">
+    <!-- dialog title-->
+  </h3>
+  <div class="mdl-dialog__content" id="dialog-content">
+    <!-- dialog content-->
+  </div>
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button mdl-js-button mdl-js-repple-effect close" type="button"><?php echo qa_lang_html('material_lite_lang/close'); ?></button>
+  </div>
+</dialog>
+<!-- // dialog-->
+
 <script>
     var btn = document.getElementById('create-group-button');
     var form = document.user_list_form;
     var userids = form.elements['userids[]'];
 
-    btn.addEventListener('click', function() {
-        console.log('submit create group');
+    var dialog = document.querySelector('#group-error-dialog');
+
+    if (btn) {
+        btn.addEventListener('click', function() {
+            var count_userids = countCheckd();
+            if (count_userids < 2) {
+                $('#dialog-title').text('2人以上選択してください');
+                $('#dialog-content').html('グループ作成には2人以上を選択する必要があります。');
+                dialog.showModal();
+            } else {
+                form.submit();
+            }
+        });
+    }
+
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
+    dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+    });
+
+    var countCheckd = function() {
         var count_userids = 0;
         for(var i = 0; i < userids.length; i++) {
             if (userids[i].checked) {
                 count_userids++;
             }
         }
-        if (count_userids < 2) {
-            console.log('2人以上選択してください');
-        } else {
-            form.submit();
-        }
-    });
+        return count_userids;
+    }
 </script>
