@@ -8,7 +8,7 @@ qa_set_template( 'messages-select-group' );
 $qa_content = qa_content_prepare();
 $qa_content['title'] = qa_lang_html( 'custom_messages/messages_page_title' );
 $loginFlags = qa_get_logged_in_flags();
-$header_note = '2人以上選択してグループチャットを開始できます。';
+$header_note = qa_lang_html('custom_messages/select_group_users');
 
 $users = cml_db_client::test_users();
 $qa_content['list'] = array(
