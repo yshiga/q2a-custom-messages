@@ -19,11 +19,26 @@
 <!-- // dialog-->
 
 <script>
+    const MAX_USERS = 3;
     var btn = document.getElementById('create-group-button');
     var form = document.user_list_form;
     var userids = form.elements['userids[]'];
 
     var dialog = document.querySelector('#group-error-dialog');
+
+    if (userids) {
+        for (var i = 0; i < userids.length; i++) {
+            userids[i].addEventListener('change', function() {
+                var count_userids = countCheckd();
+                if (count_userids >= MAX_USERS) {
+                    $('#dialog-title').text('グループの最大人数を超えています');
+                    $('#dialog-content').html('グループの最大人数は'+MAX_USERS+'人です。');
+                    dialog.showModal();
+                    this.checked = false;
+                }
+            });
+        }
+    }
 
     if (btn) {
         btn.addEventListener('click', function() {
