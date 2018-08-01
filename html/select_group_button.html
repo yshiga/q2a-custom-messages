@@ -1,0 +1,26 @@
+<div class="mdl-cell select-group-user-button-container">
+    <button class="mdl-button mdl-js-button mdl-color-text--white mdl-button--raised mdl-button--colored select-group-user-button" id="create-group-button">
+        グループを作成する
+    </button>
+</div>
+
+<script>
+    var btn = document.getElementById('create-group-button');
+    var form = document.user_list_form;
+    var userids = form.elements['userids[]'];
+
+    btn.addEventListener('click', function() {
+        console.log('submit create group');
+        var count_userids = 0;
+        for(var i = 0; i < userids.length; i++) {
+            if (userids[i].checked) {
+                count_userids++;
+            }
+        }
+        if (count_userids < 2) {
+            console.log('2人以上選択してください');
+        } else {
+            form.submit();
+        }
+    });
+</script>

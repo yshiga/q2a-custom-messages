@@ -51,6 +51,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
     }
   }
 
+  public function widgets($region, $place)
+  {
+    if ($region === 'main' && $place === 'bottom'
+        && (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group')) {
+        $this->output_select_group_button();
+    }
+    qa_html_theme_base::widgets($region, $place);
+  }
+
   public function page_title_error() {
     $templates = array('messages', 'message', 'groupmsg');
     if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && in_array($this->template, $templates) ) {
@@ -268,6 +277,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
     $header_note = $this->content['list']['note'];
     $users = $this->content['list']['users'];
     $path = CML_DIR .'/html/select_group.html';
+    include $path;
+  }
+
+  private function output_select_group_button()
+  {
+    $path = CML_DIR . '/html/select_group_button.html';
     include $path;
   }
 }

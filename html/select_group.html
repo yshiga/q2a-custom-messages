@@ -10,11 +10,11 @@
 <?php if (empty($users)): ?>
 <p> no users</p>
 <?php else: ?>
-<form action="<?php echo qa_path('groupmsg', null, qa_opt('site_url')); ?>" method="POST">
+<form action="<?php echo qa_path('groupmsg', null, qa_opt('site_url')); ?>" method="POST" name="user_list_form">
     <ul class="mdl-list group-user-list">
         <?php foreach ($users as $user): ?>
-        <li class="mdl-list__item mdl-checkbox mdl-js-checkbox">
-            <label for="<?php echo $user['userid']; ?>" style="display: contents">
+        <li class="mdl-list__item">
+            <label class="mdl-checkbox mdl-js-checkbox" for="chk<?php echo $user['userid'];?>">
             <span class="mdl-list__item-primary-content item-avatar">
                 <img src="../?qa=image&amp;qa_blobid=<?php echo $user['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
             </span>
@@ -27,7 +27,7 @@
                 </p>
             </span>
             <span class="group-user-list-checkbox">
-                <input type="checkbox" name="userids[]" id="<?php echo $user['userid'] ?>" class="mdl-checkbox__input" value="<?php echo $user['userid']; ?>">
+                <input type="checkbox" name="userids[]" id="chk<?php echo $user['userid'] ?>" class="mdl-checkbox__input" value="<?php echo $user['userid']; ?>">
             </span>
             </label>
         </li>

@@ -15,7 +15,6 @@
 .mdl-list__item {
   border-top: 1px solid #ccc;
   padding: 0;
-  height: 75px;
 }
 .mdl-list__item a {
   color: #ababab;
@@ -36,12 +35,31 @@
   display: flex;
   align-items: baseline;
 }
+.mdl-list.group-user-list .mdl-list__item {
+  padding: 12px 0;
+}
+.mdl-list.group-user-list .mdl-list__item label {
+  display: contents;
+}
+.mdl-list.group-user-list .mdl-checkbox.is-upgraded {
+  padding-left: 0;
+}
 .mdl-list.group-user-list .mdl-checkbox__box-outline {
   position: relative;
 }
 .mdl-list.group-user-list .mdl-checkbox__focus-helper {
   position: relative;
   left: 15px;
+}
+.select-group-user-button-container {
+  margin-top: 20px;
+  width: calc(100% - 16px);
+  text-align: center;
+}
+.select-group-user-button {
+  width: 98%;
+  height: 50px;
+  font-size: 20px;
 }
 @media (max-width:769px) {
   .mdl-list__item .mdl-typography--subhead{
