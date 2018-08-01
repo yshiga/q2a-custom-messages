@@ -15,6 +15,7 @@
 .mdl-list__item {
   border-top: 1px solid #ccc;
   padding: 0;
+  height: 75px;
 }
 .mdl-list__item a {
   color: #ababab;
@@ -34,6 +35,13 @@
   width: 100%;
   display: flex;
   align-items: baseline;
+}
+.mdl-list.group-user-list .mdl-checkbox__box-outline {
+  position: relative;
+}
+.mdl-list.group-user-list .mdl-checkbox__focus-helper {
+  position: relative;
+  left: 15px;
 }
 @media (max-width:769px) {
   .mdl-list__item .mdl-typography--subhead{

@@ -11,10 +11,9 @@
 <p> no users</p>
 <?php else: ?>
 <form action="<?php echo qa_path('groupmsg', null, qa_opt('site_url')); ?>" method="POST">
-    <input type="submit" value="グループを作成">
-    <ul class="mdl-list">
+    <ul class="mdl-list group-user-list">
         <?php foreach ($users as $user): ?>
-        <li class="mdl-list__item">
+        <li class="mdl-list__item mdl-checkbox mdl-js-checkbox">
             <label for="<?php echo $user['userid']; ?>" style="display: contents">
             <span class="mdl-list__item-primary-content item-avatar">
                 <img src="../?qa=image&amp;qa_blobid=<?php echo $user['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
@@ -27,10 +26,10 @@
                 <span class="mdl-chip__text"><span class="mdl-typography--font-bold"><?php echo qa_lang_html('custom_messages/location'); ?></span>：<?php echo $user['location']; ?>　　</span>
                 </p>
             </span>
-            </label>
-            <span>
-                <input type="checkbox" name="userids[]" id="<?php echo $user['userid'] ?>" value="<?php echo $user['userid']; ?>">
+            <span class="group-user-list-checkbox">
+                <input type="checkbox" name="userids[]" id="<?php echo $user['userid'] ?>" class="mdl-checkbox__input" value="<?php echo $user['userid']; ?>">
             </span>
+            </label>
         </li>
         <?php endforeach; ?>
     </ul>
