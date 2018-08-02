@@ -283,7 +283,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   private function output_select_group_button()
   {
-    $max_user_num = 3;
+    $max_user_num = 10;
     $min_select_num = 2;
     $path = CML_DIR . '/html/select_group_button.html';
     include $path;
