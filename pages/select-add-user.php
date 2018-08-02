@@ -21,4 +21,5 @@ $qa_content['list'] = array(
     'users' => $users
 );
 $qa_content['groupid'] = $groupid;
+$qa_content['group_user_count'] = count($current_group->all_users);
 return $qa_content;

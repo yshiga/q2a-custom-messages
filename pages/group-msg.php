@@ -18,7 +18,7 @@ $loginhandle = qa_get_logged_in_handle();
 if (empty($groupid)) {
     return include CML_DIR . '/pages/create-group.php';
 } elseif (!empty($groupid) && qa_get_state() === 'add-user') {
-    return include CMS_DIR . '/pages/add-user.php';
+    return include CML_DIR . '/pages/add-user.php';
 }
 
 $qa_content = qa_content_prepare();

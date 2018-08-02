@@ -58,9 +58,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function widgets($region, $place)
   {
-    if ($region === 'main' && $place === 'bottom'
-        && (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group')) {
-        $this->output_select_group_button();
+    if ($region === 'main' && $place === 'bottom') {
+        if ($this->template === 'messages-select-group') {
+          $this->output_select_group_button();
+        } elseif ($this->template === 'messages-select-add-user') {
+          $this->output_select_add_user_button();
+        }
     }
     qa_html_theme_base::widgets($region, $place);
   }
@@ -316,6 +319,14 @@ EOF;
     $max_user_num = self::MAX_USER_NUM;
     $min_select_num = 2;
     $path = CML_DIR . '/html/select_group_button.html';
+    include $path;
+  }
+
+  private function output_select_add_user_button()
+  {
+    $max_user_num = self::MAX_USER_NUM;
+    $current_user_num = @$this->content['group_user_count'];
+    $path = CML_DIR . '/html/select_add_user_button.html';
     include $path;
   }
 }
