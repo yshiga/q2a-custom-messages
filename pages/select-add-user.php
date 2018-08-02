@@ -6,11 +6,11 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 
 require_once CML_DIR.'/model/msg-groups.php';
 
-qa_set_template( 'messages-add-user' );
+qa_set_template( 'messages-select-add-user' );
 $qa_content = qa_content_prepare();
 $qa_content['title'] = qa_lang_html( 'custom_messages/messages_page_title' );
 $loginFlags = qa_get_logged_in_flags();
-$header_note = qa_lang_html('custom_messages/select_group_users');
+$header_note = qa_lang_html('custom_messages/select_add_users');
 
 $groupid = qa_get('groupid');
 $current_group = new msg_groups($groupid);
@@ -20,4 +20,5 @@ $qa_content['list'] = array(
     'note' => $header_note,
     'users' => $users
 );
+$qa_content['groupid'] = $groupid;
 return $qa_content;

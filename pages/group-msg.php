@@ -17,6 +17,8 @@ $loginhandle = qa_get_logged_in_handle();
 
 if (empty($groupid)) {
     return include CML_DIR . '/pages/create-group.php';
+} elseif (!empty($groupid) && qa_get_state() === 'add-user') {
+    return include CMS_DIR . '/pages/add-user.php';
 }
 
 $qa_content = qa_content_prepare();
@@ -182,6 +184,7 @@ if (qa_opt('show_message_history')) {
         }
     }
     $qa_content['group_user_count'] = count($current_group->all_users);
+    $qa_content['groupid'] = $groupid;
 
     // $qa_content['navigation']['sub'] = qa_messages_sub_navigation();
 

@@ -5,12 +5,12 @@
     <?php echo $header_note; ?>
 </p>
 <div class="sub-head mdl-typography--font-bold margin--top-16px">
-    <?php echo $header_sub; ?>
+    <?php echo qa_lang('custom_messages/select_user'); ?>
 </div>
 <?php if (empty($users)): ?>
 <p> no users</p>
 <?php else: ?>
-<form action="<?php echo qa_path('groupmsg', null, qa_opt('site_url')); ?>" method="POST" name="user_list_form">
+<form action="<?php echo $action_path; ?>" method="POST" name="user_list_form">
     <ul class="mdl-list group-user-list">
         <?php foreach ($users as $user): ?>
         <li class="mdl-list__item">
