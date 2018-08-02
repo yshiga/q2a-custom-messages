@@ -230,7 +230,7 @@ class cml_db_client
       return qa_db_read_all_assoc(qa_db_query_sub($sql, $userids, QA_USER_FLAGS_NO_MESSAGES));
   }
 
-  public static function select_recent_message_users($userid)
+  public static function select_recent_message_users($userid, $exclude=null)
   {
       $sql = '';
       $sql.= 'SELECT u.userid, handle, avatarblobid,';
@@ -254,6 +254,9 @@ class cml_db_client
       $sql.= ' AND touserid = $';
       $sql.= ' AND created >= DATE_SUB(NOW(), INTERVAL 1 YEAR)';
       $sql.= ' )';
+      if ($exclude) {
+          $sql .= qa_db_apply_sub(' AND u.userid NOT IN ($)', array($exclude));
+      }
 
       return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid));
   }

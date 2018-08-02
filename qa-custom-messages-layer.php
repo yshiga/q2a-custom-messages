@@ -3,7 +3,7 @@
 require_once CML_DIR.'/cml-db-client.php';
 
 class qa_html_theme_layer extends qa_html_theme_base {
-  const MAX_USER_NUM = 4;
+  const MAX_USER_NUM = 10;
 
   public function head_css()
   {
@@ -12,6 +12,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       'messages',
       'messages-select-user',
       'messages-select-group',
+      'messages-add-user',
       'groupmsg'
     );
     qa_html_theme_base::head_css();
@@ -48,6 +49,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $this->output_user_list();
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group') {
       $this->output_select_group();
+    } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-add-user') {
+      $this->output_add_user();
     } else {
       qa_html_theme_base::main_parts($content);
     }
@@ -272,9 +275,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
     $title = $this->content['message_list']['title'];
     $user_count =  @$this->content['group_user_count'];
     if ($user_count < self::MAX_USER_NUM) {
+      $groupid = 1;
       $invite_text = qa_lang('custom_messages/invite_groupmsg');
+      $add_url = qa_path('messages',array('state' => 'add-user', 'groupid' => $groupid), qa_opt('site_url'));
       $invite_html = <<<EOF
-<a href="">
+<a href="{$add_url}">
         <i class="material-icons">keyboard_arrow_right</i>
         {$invite_text}
     </a>
@@ -288,6 +293,16 @@ EOF;
   private function output_select_group()
   {
     $header_note = $this->content['list']['note'];
+    $header_sub = qa_lang('custom_messages/select_user');
+    $users = $this->content['list']['users'];
+    $path = CML_DIR .'/html/select_group.html';
+    include $path;
+  }
+
+  private function output_add_user()
+  {
+    $header_note = $this->content['list']['note'];
+    $header_sub = qa_lang('custom_messages/add_user');
     $users = $this->content['list']['users'];
     $path = CML_DIR .'/html/select_group.html';
     include $path;
