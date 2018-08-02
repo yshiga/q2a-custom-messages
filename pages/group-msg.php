@@ -181,6 +181,7 @@ if (qa_opt('show_message_history')) {
             $qa_content['message_list']['messages'][] = msg_group_messages::message_html_fields($message, $options);
         }
     }
+    $qa_content['group_user_count'] = count($current_group->all_users);
 
     // $qa_content['navigation']['sub'] = qa_messages_sub_navigation();
 

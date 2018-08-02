@@ -30,6 +30,8 @@
     'max_num_error_msg' => 'グループの最大人数は^人です。',
     'min_num_error_title' => '^人以上選択してください',
     'min_num_error_msg' => 'グループ作成には^人以上を選択する必要があります。',
+
+    'user_max_num_msg' => '<p>グループの最大人数に達しています。</p>',
   );
 
 /*

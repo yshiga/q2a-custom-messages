@@ -3,6 +3,7 @@
 require_once CML_DIR.'/cml-db-client.php';
 
 class qa_html_theme_layer extends qa_html_theme_base {
+  const MAX_USER_NUM = 4;
 
   public function head_css()
   {
@@ -269,7 +270,18 @@ class qa_html_theme_layer extends qa_html_theme_base {
     $button_leave = qa_lang('custom_messages/leave_button_label');
     $button_off = qa_lang('custom_messages/off_button_label');
     $title = $this->content['message_list']['title'];
-    $invite_text = qa_lang('custom_messages/invite_groupmsg');
+    $user_count =  @$this->content['group_user_count'];
+    if ($user_count < self::MAX_USER_NUM) {
+      $invite_text = qa_lang('custom_messages/invite_groupmsg');
+      $invite_html = <<<EOF
+<a href="">
+        <i class="material-icons">keyboard_arrow_right</i>
+        {$invite_text}
+    </a>
+EOF;
+    } else {
+      $invite_html = qa_lang('custom_messages/user_max_num_msg');
+    }
     include $path;
   }
 
@@ -283,7 +295,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   private function output_select_group_button()
   {
-    $max_user_num = 10;
+    $max_user_num = self::MAX_USER_NUM;
     $min_select_num = 2;
     $path = CML_DIR . '/html/select_group_button.html';
     include $path;
