@@ -24,6 +24,12 @@
     'groupmsg_chip' => 'グループチャット',
     'invite_groupmsg' => '会話に新しいユーザーを招待',
     'group_users' => '^さん',
+    'create_group_button' => 'グループを作成する',
+    
+    'max_num_error_title' => 'グループの最大人数を超えています',
+    'max_num_error_msg' => 'グループの最大人数は^人です。',
+    'min_num_error_title' => '^人以上選択してください',
+    'min_num_error_msg' => 'グループ作成には^人以上を選択する必要があります。',
   );
 
 /*

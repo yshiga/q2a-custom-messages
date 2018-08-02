@@ -1,6 +1,6 @@
 <div class="mdl-cell select-group-user-button-container">
     <button class="mdl-button mdl-js-button mdl-color-text--white mdl-button--raised mdl-button--colored select-group-user-button" id="create-group-button">
-        グループを作成する
+        <?php echo qa_lang_html('custom_messages/create_group_button'); ?>
     </button>
 </div>
 
@@ -19,7 +19,7 @@
 <!-- // dialog-->
 
 <script>
-    const MAX_USERS = 3;
+    const MAX_USERS = <?php echo $max_user_num; ?>;
     var btn = document.getElementById('create-group-button');
     var form = document.user_list_form;
     var userids = form.elements['userids[]'];
@@ -31,8 +31,8 @@
             userids[i].addEventListener('change', function() {
                 var count_userids = countCheckd();
                 if (count_userids >= MAX_USERS) {
-                    $('#dialog-title').text('グループの最大人数を超えています');
-                    $('#dialog-content').html('グループの最大人数は'+MAX_USERS+'人です。');
+                    $('#dialog-title').text('<?php echo qa_lang_html("custom_messages/max_num_error_title"); ?>');
+                    $('#dialog-content').html('<?php echo qa_lang_sub("custom_messages/max_num_error_msg", $max_user_num); ?>');
                     dialog.showModal();
                     this.checked = false;
                 }
@@ -44,8 +44,8 @@
         btn.addEventListener('click', function() {
             var count_userids = countCheckd();
             if (count_userids < 2) {
-                $('#dialog-title').text('2人以上選択してください');
-                $('#dialog-content').html('グループ作成には2人以上を選択する必要があります。');
+                $('#dialog-title').text('<?php echo qa_lang_sub("custom_messages/min_num_error_title", $min_select_num); ?>');
+                $('#dialog-content').html('<?php echo qa_lang_sub("custom_messages/min_num_error_msg",$min_select_num); ?>');
                 dialog.showModal();
             } else {
                 form.submit();

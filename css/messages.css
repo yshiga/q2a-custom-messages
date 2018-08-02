@@ -61,6 +61,9 @@
   height: 50px;
   font-size: 20px;
 }
+dialog#group-error-dialog {
+  width: 50%;
+}
 @media (max-width:769px) {
   .mdl-list__item .mdl-typography--subhead{
     flex-direction: column;
