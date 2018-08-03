@@ -42,8 +42,12 @@ if ( !$current_group->allow_browse($loginuserid)) {
 
 // グループから退室をクリックしたとき
 if (qa_clicked('do_leave_group')) {
-    $current_group->remove_user($loginuserid);
-    qa_redirect('messages', null, qa_opt('site_url'));
+    if ( !qa_check_form_security_code('group-action-'.$groupid, qa_post_text('code')) ) {
+        $pageerror = qa_lang_html('misc/form_security_again');
+    } else {
+        $current_group->remove_user($loginuserid);
+        qa_redirect('messages', null, qa_opt('site_url'));
+    }
 }
 
 // グループ内メッセージの取得
