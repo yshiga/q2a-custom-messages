@@ -35,7 +35,13 @@
     'min_num_error_title' => '^人以上選択してください',
     'min_num_error_msg' => 'グループ作成には^人以上を選択する必要があります。',
 
+    'confirm_leave_title' => '退室しますか？',
+    'confirm_leave_msg' => '一度退室するとこれまでのメッセージは読めなくなります。本当に退室しますか？',
+
     'user_max_num_msg' => '<p>グループの最大人数に達しています。</p>',
+
+    'label_yes' => 'はい',
+    'label_no' => 'いいえ',
   );
 
 /*

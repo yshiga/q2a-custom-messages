@@ -203,6 +203,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
         }
       }
+      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME &&
+          $this->template === 'groupmsg') {
+        $this->output_dialog_leave();
+      }
       qa_html_theme_base::body_footer();
   }
 
@@ -272,13 +276,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
   private function output_group_header()
   {
     $path = CML_DIR . '/html/groupmsg_header.html';
+    $groupid = @$this->content['groupid'];
     $group_chip = $this->content['message_list']['chip'];
     $button_leave = qa_lang('custom_messages/leave_button_label');
     $button_off = qa_lang('custom_messages/off_button_label');
     $title = $this->content['message_list']['title'];
+    $action = qa_path('groupmsg/'.$groupid, null, qa_opt('site_url'));
+    $code = $this->content['group']['code'];
     $user_count =  @$this->content['group_user_count'];
     if ($user_count < self::MAX_USER_NUM) {
-      $groupid = @$this->content['groupid'];
       $invite_text = qa_lang('custom_messages/invite_groupmsg');
       $add_url = qa_path('messages',array('state' => 'add-user', 'groupid' => $groupid), qa_opt('site_url'));
       $invite_html = <<<EOF
@@ -327,6 +333,12 @@ EOF;
     $max_user_num = self::MAX_USER_NUM;
     $current_user_num = @$this->content['group_user_count'];
     $path = CML_DIR . '/html/select_add_user_button.html';
+    include $path;
+  }
+
+  private function output_dialog_leave()
+  {
+    $path = CML_DIR . '/html/dialog_leave.html';
     include $path;
   }
 }

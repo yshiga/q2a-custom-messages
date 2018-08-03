@@ -40,6 +40,12 @@ if ( !$current_group->allow_browse($loginuserid)) {
     return include QA_INCLUDE_DIR.'qa-page-not-found.php';
 }
 
+// グループから退室をクリックしたとき
+if (qa_clicked('do_leave_group')) {
+    $current_group->remove_user($loginuserid);
+    qa_redirect('messages', null, qa_opt('site_url'));
+}
+
 // グループ内メッセージの取得
 $recent = qa_db_select_with_pending(
     msg_group_messages::recent_messages_selectspec($groupid)
@@ -185,6 +191,9 @@ if (qa_opt('show_message_history')) {
     }
     $qa_content['group_user_count'] = count($current_group->all_users);
     $qa_content['groupid'] = $groupid;
+    $qa_content['group'] = array(
+        'code' => qa_get_form_security_code('group-action-'.$groupid)
+    );
 
     // $qa_content['navigation']['sub'] = qa_messages_sub_navigation();
 

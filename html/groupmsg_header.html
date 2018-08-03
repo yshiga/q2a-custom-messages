@@ -5,21 +5,25 @@
         </span>
     </div>
     <div class="mdl-layout-spacer"></div>
-    <div class="groupmsg-buttons qa-q-view-buttons">
-    <button type="button" class="mdl-button mdl-js-button mdl-button--icon" id="meta-menu-lower-right-gmsg"><i class="material-icons">more_vert</i></button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="meta-menu-lower-right-gmsg">
-        <li class="mdl-menu__item">
-            <button class="mdl-button" value="<?php echo $button_leave; ?>" >
-                <?php echo $button_leave; ?>
-            </button>
-        </li>
-        <li class="mdl-menu__item">
-            <button class="mdl-button" value="<?php echo $button_off; ?>" >
-                <?php echo $button_off; ?>
-            </button>
-        </li>
-    </ul>
-    </div>
+    <form action="<?php echo $action; ?>" method="POST" id="group-actions">
+        <div class="groupmsg-buttons qa-q-view-buttons">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--icon" id="meta-menu-lower-right-gmsg"><i class="material-icons">more_vert</i></button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="meta-menu-lower-right-gmsg">
+                <li class="mdl-menu__item">
+                    <button class="mdl-button" value="<?php echo $button_leave; ?>" type="button" id="leave-group-button" name="do_leave_group">
+                        <?php echo $button_leave; ?>
+                    </button>
+                </li>
+                <li class="mdl-menu__item">
+                    <button class="mdl-button" value="<?php echo $button_off; ?>" >
+                        <?php echo $button_off; ?>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <input type="hidden" name="code" value="<?php echo $code; ?>">
+        <input type="hidden" name="qa_click" value="">
+    </form>
 </div>
 <h2 class="mdl-typography--title-color-contrast mdl-typography--font-bold">
     <?php echo $title; ?>

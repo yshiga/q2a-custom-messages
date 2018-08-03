@@ -61,7 +61,8 @@
   height: 50px;
   font-size: 20px;
 }
-dialog#group-error-dialog {
+dialog#group-error-dialog,
+dialog#leave-group-dialog {
   width: 50%;
 }
 @media (max-width:769px) {
