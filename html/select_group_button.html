@@ -1,0 +1,73 @@
+<div class="mdl-cell select-group-user-button-container">
+    <button class="mdl-button mdl-js-button mdl-color-text--white mdl-button--raised mdl-button--colored select-group-user-button" id="create-group-button">
+        <?php echo qa_lang_html('custom_messages/create_group_button'); ?>
+    </button>
+</div>
+
+<!-- dialog-->
+<dialog class="mdl-dialog" id="group-error-dialog">
+  <h3 class="mdl-dialog__title" id="dialog-title">
+    <!-- dialog title-->
+  </h3>
+  <div class="mdl-dialog__content" id="dialog-content">
+    <!-- dialog content-->
+  </div>
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button mdl-js-button mdl-js-repple-effect close" type="button"><?php echo qa_lang_html('material_lite_lang/close'); ?></button>
+  </div>
+</dialog>
+<!-- // dialog-->
+
+<script>
+    const MAX_USERS = <?php echo $max_user_num; ?>;
+    var btn = document.getElementById('create-group-button');
+    var form = document.user_list_form;
+    var userids = form.elements['userids[]'];
+
+    var dialog = document.querySelector('#group-error-dialog');
+
+    if (userids) {
+        for (var i = 0; i < userids.length; i++) {
+            userids[i].addEventListener('change', function() {
+                var count_userids = countCheckd();
+                if (count_userids >= MAX_USERS) {
+                    $('#dialog-title').text('<?php echo qa_lang_html("custom_messages/max_num_error_title"); ?>');
+                    $('#dialog-content').html('<?php echo qa_lang_sub("custom_messages/max_num_error_msg", $max_user_num); ?>');
+                    dialog.showModal();
+                    this.checked = false;
+                }
+            });
+        }
+    }
+
+    if (btn) {
+        btn.addEventListener('click', function() {
+            var count_userids = countCheckd();
+            if (count_userids < 2) {
+                $('#dialog-title').text('<?php echo qa_lang_sub("custom_messages/min_num_error_title", $min_select_num); ?>');
+                $('#dialog-content').html('<?php echo qa_lang_sub("custom_messages/min_num_error_msg",$min_select_num); ?>');
+                dialog.showModal();
+            } else {
+                form.submit();
+            }
+        });
+    }
+
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
+    dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+    });
+
+    var countCheckd = function() {
+        var count_userids = 0;
+        for(var i = 0; i < userids.length; i++) {
+            if (userids[i].checked) {
+                count_userids++;
+            }
+        }
+        return count_userids;
+    }
+</script>

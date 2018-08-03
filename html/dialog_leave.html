@@ -1,0 +1,44 @@
+<!-- dialog-->
+<dialog class="mdl-dialog" id="leave-group-dialog">
+  <h3 class="mdl-dialog__title" id="dialog-title">
+    <!-- dialog title-->
+  </h3>
+  <div class="mdl-dialog__content" id="dialog-content">
+    <!-- dialog content-->
+  </div>
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button mdl-js-button mdl-js-repple-effect do-action" type="button">
+        <?php echo qa_lang_html('custom_messages/label_yes'); ?>
+    </button>
+    <button class="mdl-button mdl-js-button mdl-js-repple-effect close" type="button">
+        <?php echo qa_lang_html('custom_messages/label_no'); ?>
+    </button>
+  </div>
+</dialog>
+<!-- // dialog-->
+
+<script>
+    var btn = document.getElementById('leave-group-button');
+    var dialog = document.getElementById('leave-group-dialog');
+    var f = document.getElementById('group-actions');
+
+    if (btn) {
+        btn.addEventListener('click', function() {
+            $('#dialog-title').text('<?php echo qa_lang("custom_messages/confirm_leave_title"); ?>');
+            $('#dialog-content').html('<?php echo qa_lang("custom_messages/confirm_leave_msg"); ?>');
+            f.qa_click.value = "do_leave_group";
+            dialog.showModal();
+        });
+    }
+
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
+    dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+    });
+    dialog.querySelector('.do-action').addEventListener('click', function() {
+        f.submit();
+    });
+</script>

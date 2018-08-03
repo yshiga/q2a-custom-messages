@@ -3,6 +3,8 @@
 require_once CML_DIR.'/cml-db-client.php';
 
 class qa_html_theme_layer extends qa_html_theme_base {
+  const MAX_USER_NUM = 10;
+
   public function head_css()
   {
     $allow_template = array(
@@ -10,6 +12,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       'messages',
       'messages-select-user',
       'messages-select-group',
+      'messages-select-add-user',
       'groupmsg'
     );
     qa_html_theme_base::head_css();
@@ -46,9 +49,23 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $this->output_user_list();
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group') {
       $this->output_select_group();
+    } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-add-user') {
+      $this->output_add_user();
     } else {
       qa_html_theme_base::main_parts($content);
     }
+  }
+
+  public function widgets($region, $place)
+  {
+    if ($region === 'main' && $place === 'bottom') {
+        if ($this->template === 'messages-select-group') {
+          $this->output_select_group_button();
+        } elseif ($this->template === 'messages-select-add-user') {
+          $this->output_select_add_user_button();
+        }
+    }
+    qa_html_theme_base::widgets($region, $place);
   }
 
   public function page_title_error() {
@@ -186,6 +203,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
         }
       }
+      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME &&
+          $this->template === 'groupmsg') {
+        $this->output_dialog_leave();
+      }
       qa_html_theme_base::body_footer();
   }
 
@@ -255,19 +276,69 @@ class qa_html_theme_layer extends qa_html_theme_base {
   private function output_group_header()
   {
     $path = CML_DIR . '/html/groupmsg_header.html';
+    $groupid = @$this->content['groupid'];
     $group_chip = $this->content['message_list']['chip'];
     $button_leave = qa_lang('custom_messages/leave_button_label');
     $button_off = qa_lang('custom_messages/off_button_label');
     $title = $this->content['message_list']['title'];
-    $invite_text = qa_lang('custom_messages/invite_groupmsg');
+    $action = qa_path('groupmsg/'.$groupid, null, qa_opt('site_url'));
+    $code = $this->content['group']['code'];
+    $user_count =  @$this->content['group_user_count'];
+    if ($user_count < self::MAX_USER_NUM) {
+      $invite_text = qa_lang('custom_messages/invite_groupmsg');
+      $add_url = qa_path('messages',array('state' => 'add-user', 'groupid' => $groupid), qa_opt('site_url'));
+      $invite_html = <<<EOF
+<a href="{$add_url}">
+        <i class="material-icons">keyboard_arrow_right</i>
+        {$invite_text}
+    </a>
+EOF;
+    } else {
+      $invite_html = qa_lang('custom_messages/user_max_num_msg');
+    }
     include $path;
   }
 
   private function output_select_group()
   {
     $header_note = $this->content['list']['note'];
+    $header_sub = qa_lang('custom_messages/select_user');
+    $action_path = qa_path('groupmsg', null, qa_opt('site_url'));
     $users = $this->content['list']['users'];
     $path = CML_DIR .'/html/select_group.html';
+    include $path;
+  }
+
+  private function output_add_user()
+  {
+    $header_note = $this->content['list']['note'];
+    $header_sub = qa_lang('custom_messages/add_user');
+    $groupid = @$this->content['groupid'];
+    $action_path = qa_path('groupmsg/'.$groupid, array('state'=>'add-user'), qa_opt('site_url'));
+    $users = $this->content['list']['users'];
+    $path = CML_DIR .'/html/select_group.html';
+    include $path;
+  }
+
+  private function output_select_group_button()
+  {
+    $max_user_num = self::MAX_USER_NUM;
+    $min_select_num = 2;
+    $path = CML_DIR . '/html/select_group_button.html';
+    include $path;
+  }
+
+  private function output_select_add_user_button()
+  {
+    $max_user_num = self::MAX_USER_NUM;
+    $current_user_num = @$this->content['group_user_count'];
+    $path = CML_DIR . '/html/select_add_user_button.html';
+    include $path;
+  }
+
+  private function output_dialog_leave()
+  {
+    $path = CML_DIR . '/html/dialog_leave.html';
     include $path;
   }
 }

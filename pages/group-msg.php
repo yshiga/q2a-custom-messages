@@ -17,6 +17,8 @@ $loginhandle = qa_get_logged_in_handle();
 
 if (empty($groupid)) {
     return include CML_DIR . '/pages/create-group.php';
+} elseif (!empty($groupid) && qa_get_state() === 'add-user') {
+    return include CML_DIR . '/pages/add-user.php';
 }
 
 $qa_content = qa_content_prepare();
@@ -36,6 +38,16 @@ if (!isset($loginuserid)) {
 // グループ閲覧権限チェック
 if ( !$current_group->allow_browse($loginuserid)) {
     return include QA_INCLUDE_DIR.'qa-page-not-found.php';
+}
+
+// グループから退室をクリックしたとき
+if (qa_clicked('do_leave_group')) {
+    if ( !qa_check_form_security_code('group-action-'.$groupid, qa_post_text('code')) ) {
+        $pageerror = qa_lang_html('misc/form_security_again');
+    } else {
+        $current_group->remove_user($loginuserid);
+        qa_redirect('messages', null, qa_opt('site_url'));
+    }
 }
 
 // グループ内メッセージの取得
@@ -181,6 +193,11 @@ if (qa_opt('show_message_history')) {
             $qa_content['message_list']['messages'][] = msg_group_messages::message_html_fields($message, $options);
         }
     }
+    $qa_content['group_user_count'] = count($current_group->all_users);
+    $qa_content['groupid'] = $groupid;
+    $qa_content['group'] = array(
+        'code' => qa_get_form_security_code('group-action-'.$groupid)
+    );
 
     // $qa_content['navigation']['sub'] = qa_messages_sub_navigation();
 

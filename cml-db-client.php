@@ -230,6 +230,37 @@ class cml_db_client
       return qa_db_read_all_assoc(qa_db_query_sub($sql, $userids, QA_USER_FLAGS_NO_MESSAGES));
   }
 
+  public static function select_recent_message_users($userid, $exclude=null)
+  {
+      $sql = '';
+      $sql.= 'SELECT u.userid, handle, avatarblobid,';
+      $sql.= ' content as location';
+      $sql.= ' FROM ^users u';
+      $sql.= ' LEFT JOIN (';
+      $sql.= '     SELECT userid, content';
+      $sql.= '     FROM ^userprofile';
+      $sql.= "     WHERE title like 'location'";
+      $sql.= ' ) p ON u.userid = p.userid';
+      $sql.= ' WHERE u.userid IN (';
+      $sql.= '   SELECT DISTINCT touserid';
+      $sql.= '   FROM ^messages';
+      $sql.= "   WHERE `type` = 'PRIVATE'";
+      $sql.= '   AND fromuserid = $';
+      $sql.= '   AND created >= DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+      $sql.= ' UNION';
+      $sql.= ' SELECT DISTINCT fromuserid';
+      $sql.= ' FROM ^messages';
+      $sql.= " WHERE `type` = 'PRIVATE'";
+      $sql.= ' AND touserid = $';
+      $sql.= ' AND created >= DATE_SUB(NOW(), INTERVAL 1 YEAR)';
+      $sql.= ' )';
+      if ($exclude) {
+          $sql .= qa_db_apply_sub(' AND u.userid NOT IN ($)', array($exclude));
+      }
+
+      return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid));
+  }
+
   public static function test_users()
   {
       $sql = '';

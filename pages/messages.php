@@ -48,6 +48,8 @@
     return include CML_DIR . '/pages/select-user.php';
   } elseif ($state === 'group') {
     return include CML_DIR . '/pages/select-group.php';
+  } elseif ($state === 'add-user') {
+    return include CML_DIR . '/pages/select-add-user.php';
   }
 
   // get number of messages then actual messages for this page
