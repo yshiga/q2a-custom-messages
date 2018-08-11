@@ -143,12 +143,8 @@
     $content = strip_tags($message['content']);
     $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
     $msgFormat['content'] = $content;
-    if (in_array($loginUserId, $cur_group->join_users)) {
-      $msgFormat['messageurl'] = qa_path_html('groupmsg/'.$groupid, null, qa_opt
+    $msgFormat['messageurl'] = qa_path_html('groupmsg/'.$groupid, null, qa_opt
     ('site_url'));
-    } else {
-      $msgFormat['messageurl'] = qa_path_html('groupinvitation/'.$groupid, null, qa_opt('site_url'));
-    }
     $msgFormat['type'] = 'group';
     // ソートのための値
     $sort[] = $message['created'];
