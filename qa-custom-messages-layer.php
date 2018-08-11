@@ -201,7 +201,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function body_footer()
   {
-      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
+      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME 
+         && ($this->template === 'message'
+         || $this->template === 'groupmsg')) {
         if (strpos(qa_get_state(), 'message-sent') === false) {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
         }
