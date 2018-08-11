@@ -25,7 +25,7 @@ $url = 'groupmsg/'.$ret;
 
 // グループにユーザーを追加
 foreach ($userids as $userid) {
-    $join = $group::GROUP_MSG_INVITE;
+    $join = $group::GROUP_MSG_JOIN;
     $group->add_user($userid, $join);
     
     qa_report_event('g_invite', $loginuserid, qa_get_logged_in_handle(), qa_cookie_get(),
