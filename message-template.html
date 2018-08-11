@@ -6,6 +6,11 @@
             <img src="../?qa=image&amp;qa_blobid=<?php echo $message['avatarblobid']; ?>&amp;qa_size=60" width="60" height="60" class="qa-avatar-image" alt="">
           </div>
           <div class="message" id="m<?php echo $message['messageid']; ?>">
+            <?php if (isset($message['handle'])): ?>
+            <span class="date mdl-typography--caption mdl-color-text--grey-500" <?php echo $message['handle_align']; ?>>
+              <?php echo $message['handle']; ?>
+            </span>
+            <?php endif; ?>
             <div class="<?php echo $message['color']; ?> ballon padding--16px">
                 <?php echo $message['content']; ?>
             </div>

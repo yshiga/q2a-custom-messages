@@ -161,16 +161,19 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $tmp = array();
       $raw = $message['raw'];
       $tmp['messageid'] = $raw['messageid'];
+      $tmp['handle'] = $raw['handle'];
       $content = $this->get_html($message['content']); 
       $tmp['content'] = $this->medium_editor_embed_replace($content);
       if ($raw['handle'] === $loginuserhandle) {
         $tmp['status'] = 'sent';
         $tmp['color'] = 'mdl-color--orange-100';
-        $tmp['textalign'] = 'style="text-align: right;"';
+        $tmp['textalign'] = 'style="text-align: right;display: block;"';
+        $tmp['handle_align'] = 'style="text-align: right;display: block;"';
       } else {
         $tmp['status'] = 'received';
         $tmp['color'] = 'mdl-color--grey-50';
-        $tmp['textalign'] = '';
+        $tmp['textalign'] = 'style="text-align: right;display: block;"';
+        $tmp['handle_align'] = '';
       }
       $tmp['avatarblobid'] = $raw['avatarblobid'];
       if (isset($message['when']['suffix']) && !empty($message['when']['suffix'])) {
