@@ -6,15 +6,19 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 
 require_once CML_DIR.'/model/msg-groups.php';
 
+$groupid = qa_get('groupid');
+$current_group = new msg_groups($groupid);
+$loginUserId = qa_get_logged_in_userid();
+// グループ閲覧権限チェック
+if ( !$current_group->allow_browse($loginUserId)) {
+    return include QA_INCLUDE_DIR.'qa-page-not-found.php';
+}
 qa_set_template( 'messages-select-add-user' );
 $qa_content = qa_content_prepare();
 $qa_content['title'] = qa_lang_html( 'custom_messages/messages_page_title' );
 $loginFlags = qa_get_logged_in_flags();
 $header_note = qa_lang_html('custom_messages/select_add_users');
 
-$groupid = qa_get('groupid');
-$current_group = new msg_groups($groupid);
-$loginUserId = qa_get_logged_in_userid();
 $users = cml_db_client::select_recent_message_users($loginUserId, $current_group->all_users);
 $qa_content['list'] = array(
     'note' => $header_note,

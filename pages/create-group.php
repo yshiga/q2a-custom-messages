@@ -27,11 +27,7 @@ if ($ret) {
     $group->create();
 
     foreach ($userids as $userid) {
-        if ($userid === $loginuserid) {
-            $join = $group::GROUP_MSG_JOIN;
-        } else {
-            $join = $group::GROUP_MSG_INVITE;
-        }
+        $join = $group::GROUP_MSG_JOIN;
         $group->add_user($userid, $join);
         
         if ($userid !== $loginuserid) {
