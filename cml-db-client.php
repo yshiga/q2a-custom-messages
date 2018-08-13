@@ -214,20 +214,25 @@ class cml_db_client
 
       $userids = array_unique(array_merge($interaction_users, $send_message_users));
 
-      // 該当ユーザーのうち「すべてのユーザーとやり取りする」にチェックが入っていないユーザーを除外
-      $sql = '';
-      $sql.= 'SELECT u.userid, handle, avatarblobid,';
-      $sql.= ' content as location';
-      $sql.= ' FROM ^users u';
-      $sql.= ' LEFT JOIN (';
-      $sql.= '     SELECT userid, content';
-      $sql.= '     FROM ^userprofile';
-      $sql.= "     WHERE title like 'location'";
-      $sql.= ' ) p ON u.userid = p.userid';
-      $sql.= ' WHERE u.userid IN ($)';
-      $sql.= ' AND NOT (u.flags & #)';
+      if (count($userids) > 0) {
+        // 該当ユーザーのうち「すべてのユーザーとやり取りする」にチェックが入っていないユーザーを除外
+        $sql = '';
+        $sql.= 'SELECT u.userid, handle, avatarblobid,';
+        $sql.= ' content as location';
+        $sql.= ' FROM ^users u';
+        $sql.= ' LEFT JOIN (';
+        $sql.= '     SELECT userid, content';
+        $sql.= '     FROM ^userprofile';
+        $sql.= "     WHERE title like 'location'";
+        $sql.= ' ) p ON u.userid = p.userid';
+        $sql.= ' WHERE u.userid IN ($)';
+        $sql.= ' AND NOT (u.flags & #)';
 
-      return qa_db_read_all_assoc(qa_db_query_sub($sql, $userids, QA_USER_FLAGS_NO_MESSAGES));
+        $result = qa_db_read_all_assoc(qa_db_query_sub($sql, $userids, QA_USER_FLAGS_NO_MESSAGES));
+      } else {
+        $result = null;
+      }
+      return $result;
   }
 
   public static function select_recent_message_users($userid, $exclude=null)
