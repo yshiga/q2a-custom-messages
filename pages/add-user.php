@@ -21,7 +21,7 @@ $loginuserid = qa_get_logged_in_userid();
 
 // グループ生成
 $group = new msg_groups($groupid);
-$url = 'groupmsg/'.$ret;
+$url = 'groupmsg/'.$group->groupid;
 
 // グループにユーザーを追加
 foreach ($userids as $userid) {

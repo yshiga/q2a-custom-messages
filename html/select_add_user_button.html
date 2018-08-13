@@ -62,8 +62,14 @@
 
     var countCheckd = function() {
         var count_userids = 0;
-        for(var i = 0; i < userids.length; i++) {
-            if (userids[i].checked) {
+        if (userids.length) {
+            for(var i = 0; i < userids.length; i++) {
+                if (userids[i].checked) {
+                    count_userids++;
+                }
+            }
+        } else {
+            if (userids.checked) {
                 count_userids++;
             }
         }
