@@ -72,7 +72,7 @@
   $sort = array();
   foreach ($userMessages as $message) {
     $msgFormat = array();
-    if ($loginUserId === $message['touserid']) {
+    if ($loginUserId == $message['touserid']) {
       $replyHandle = $message['fromhandle'];
       $replyBlobid = $message['fromavatarblobid'];
       $replyLocation = $message['fromlocation'];

@@ -327,18 +327,22 @@ EOF;
 
   private function output_select_group_button()
   {
-    $max_user_num = self::MAX_USER_NUM;
-    $min_select_num = 2;
-    $path = CML_DIR . '/html/select_group_button.html';
-    include $path;
+    if (count($this->content['list']['users']) > 0) {
+      $max_user_num = self::MAX_USER_NUM;
+      $min_select_num = 2;
+      $path = CML_DIR . '/html/select_group_button.html';
+      include $path;
+    }
   }
 
   private function output_select_add_user_button()
   {
-    $max_user_num = self::MAX_USER_NUM;
-    $current_user_num = @$this->content['group_user_count'];
-    $path = CML_DIR . '/html/select_add_user_button.html';
-    include $path;
+    if (count($this->content['list']['users']) > 0) {
+      $max_user_num = self::MAX_USER_NUM;
+      $current_user_num = @$this->content['group_user_count'];
+      $path = CML_DIR . '/html/select_add_user_button.html';
+      include $path;
+    }
   }
 
   private function output_dialog_leave()
