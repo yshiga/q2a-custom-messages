@@ -284,7 +284,13 @@ class qa_html_theme_layer extends qa_html_theme_base {
     $groupid = @$this->content['groupid'];
     $group_chip = $this->content['message_list']['chip'];
     $button_leave = qa_lang('custom_messages/leave_button_label');
-    $button_off = qa_lang('custom_messages/off_button_label');
+    if (@$this->content['group_notify'] == 1) {
+      $button_notice = qa_lang('custom_messages/off_button_label');
+      $button_name = 'do_group_notice_off';
+    } else {
+      $button_notice = qa_lang('custom_messages/on_button_label');
+      $button_name = 'do_group_notice_on';
+    }
     $title = $this->content['message_list']['title'];
     $action = qa_path('groupmsg/'.$groupid, null, qa_opt('site_url'));
     $code = $this->content['group']['code'];

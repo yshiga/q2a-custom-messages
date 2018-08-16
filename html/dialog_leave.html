@@ -19,6 +19,7 @@
 
 <script>
     var btn = document.getElementById('leave-group-button');
+    var btn_notice = document.getElementById('group-notice-button');
     var dialog = document.getElementById('leave-group-dialog');
     var f = document.getElementById('group-actions');
 
@@ -28,6 +29,13 @@
             $('#dialog-content').html('<?php echo qa_lang("custom_messages/confirm_leave_msg"); ?>');
             f.qa_click.value = "do_leave_group";
             dialog.showModal();
+        });
+    }
+
+    if (btn_notice) {
+        btn_notice.addEventListener('click', function() {
+            f.qa_click.value = this.name;
+            f.submit();
         });
     }
 

@@ -23,6 +23,7 @@
     'add_user' => 'メッセージを送りたいユーザーを選択して一番下にあるオレンジの[グループに追加する]ボタンを押してください。',
     'leave_button_label' => 'グループから退室',
     'off_button_label' => '通知をオフにする',
+    'on_button_label' => '通知をオンにする',
     'groupmsg_chip' => 'グループチャット',
     'invite_groupmsg' => '会話に新しいユーザーを招待',
     'group_users' => '^さん',
