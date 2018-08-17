@@ -90,6 +90,34 @@ class msg_groups
         return in_array($userid, $this->all_users);
     }
 
+    public function notify_off($userid)
+    {
+        qa_db_query_sub(
+            'UPDATE ^msg_group_users SET `notify` = # WHERE groupid = # AND userid = #',
+            self::GROUP_NOTIFY_OFF, $this->groupid, $userid
+        );
+        return;
+    }
+
+    public function notify_on($userid)
+    {
+        qa_db_query_sub(
+            'UPDATE ^msg_group_users SET `notify` = # WHERE groupid = # AND userid = #',
+            self::GROUP_NOTIFY_ON, $this->groupid, $userid
+        );
+        return;
+    }
+
+    public function get_group_notify($userid)
+    {
+        $sql = "SELECT `notify`";
+        $sql.= " FROM ^msg_group_users";
+        $sql.= " WHERE groupid = #";
+        $sql.= " AND userid = #";
+        
+        return qa_db_read_one_value(qa_db_query_sub($sql, $this->groupid, $userid), true);
+    }
+
     public static function get_group_join_users($groupid)
     {
         $sql = "SELECT userid";

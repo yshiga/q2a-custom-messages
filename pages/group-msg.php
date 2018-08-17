@@ -50,6 +50,23 @@ if (qa_clicked('do_leave_group')) {
     }
 }
 
+// グループ通知オフのボタンをクリックしたとき
+if (qa_clicked('do_group_notice_off')) {
+    if ( !qa_check_form_security_code('group-action-'.$groupid, qa_post_text('code')) ) {
+        $pageerror = qa_lang_html('misc/form_security_again');
+    } else {
+        $current_group->notify_off($loginuserid);
+    }
+} elseif (qa_clicked('do_group_notice_on')) {
+    if ( !qa_check_form_security_code('group-action-'.$groupid, qa_post_text('code')) ) {
+        $pageerror = qa_lang_html('misc/form_security_again');
+    } else {
+        $current_group->notify_on($loginuserid);
+    }
+}
+
+$qa_content['group_notify'] = $current_group->get_group_notify($loginuserid);
+
 // グループ内メッセージの取得
 $recent = qa_db_select_with_pending(
     msg_group_messages::recent_messages_selectspec($groupid)
