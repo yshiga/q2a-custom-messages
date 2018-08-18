@@ -47,7 +47,7 @@ class msg_groups
     {
         qa_db_query_sub(
             'INSERT INTO ^msg_group_users (`groupid`, `userid`, `join`, `notify`) VALUES (#, #, #, #)',
-            $this->groupid, $userid, $join, self::GROUP_NOTIFY_OFF
+            $this->groupid, $userid, $join, self::GROUP_NOTIFY_ON
         );
         return qa_db_last_insert_id();
     }
