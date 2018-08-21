@@ -154,3 +154,13 @@ i.material-icons.group-titles {
 .qa-template-groupmsg .medium-editor-element {
   min-height: 100px;
 }
+
+.qa-template-groupmsg .video-youtube {
+  width: 150px;
+}
+
+@media (min-width: 768px) {
+  .qa-template-groupmsg .video-youtube {
+    width: 350px;
+  }
+}
