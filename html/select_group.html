@@ -5,7 +5,7 @@
     <?php echo $header_note; ?>
 </p>
 <?php if (empty($users)): ?>
-<p> no users</p>
+<p><?php echo qa_lang('custom_messages/invite_group_no_user'); ?></p>
 <?php else: ?>
 <form action="<?php echo $action_path; ?>" method="POST" name="user_list_form">
     <ul class="mdl-list group-user-list">

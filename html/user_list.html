@@ -5,7 +5,7 @@
     <?php echo $header_note; ?>
 </p>
 <?php if (empty($users) && empty($users2)): ?>
-<p> no users</p>
+<p><?php echo qa_lang('custom_messages/create_message_no_user'); ?></p>
 <?php else: ?>
 <ul class="mdl-list">
     <?php foreach ($users as $user): ?>
@@ -19,7 +19,7 @@
             <?php echo $user['handle']; ?>　
             </div>
             <p class="message mdl-list__item-text-body mdl-typography--body-color-contrast">
-            <span class="mdl-chip__text"><span class="mdl-typography--font-bold"><?php echo qa_lang_html('custom_messages/location'); ?></span>：<?php echo $user['location']; ?>　　</span>
+            <span class="mdl-chip__text"><span class="mdl-typography--font-bold"><?php echo qa_jang_html('custom_messages/location'); ?></span>：<?php echo $user['location']; ?>　　</span>
             </p>
         </span>
         </a>
