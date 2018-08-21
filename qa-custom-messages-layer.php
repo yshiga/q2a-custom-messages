@@ -217,7 +217,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function form_buttons($form, $columns)
   {
-      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME && $this->template === 'message') {
+      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME 
+      && ($this->template === 'message'
+      ||  $this->template === 'groupmsg')) {
           if(isset($form['buttons']['send'])) {
               $tags = $form['buttons']['send']['tags'];
               $tags .= " id='send-message'";
