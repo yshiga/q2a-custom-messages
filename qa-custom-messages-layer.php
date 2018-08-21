@@ -127,7 +127,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
     foreach ($messages as $message) {
       $tmp = array();
       $tmp['messageid'] = $message['raw']['messageid'];
-      $content = $this->get_html($message['raw']['content']); 
+      $content = $this->get_html($message['content']); 
       // $content = $message['raw']['content'];
       $tmp['content'] = $this->medium_editor_embed_replace($content);
       if ($message['raw']['fromhandle'] === $loginuserhandle) {
