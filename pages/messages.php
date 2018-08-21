@@ -105,9 +105,7 @@
     } else {
       $msgFormat['create_date'] = $tmp_date->format(qa_lang_html('custom_messages/date_format'));
     }
-    $content = strip_tags($message['content']);
-    $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
-    $msgFormat['content'] = $content;
+    $msgFormat['content'] = cml_replace_content($message['content']);
     $msgFormat['messageurl'] = qa_path_html('message/'.$replyHandle);
     $msgFormat['type'] = 'user';
     // ソートのための値
@@ -140,9 +138,7 @@
     } else {
       $msgFormat['create_date'] = $tmp_date->format(qa_lang_html('custom_messages/date_format'));
     }
-    $content = strip_tags($message['content']);
-    $content = mb_strimwidth($content, 0, 100, "...", "utf-8");
-    $msgFormat['content'] = $content;
+    $msgFormat['content'] = cml_replace_content($message['content']);
     $msgFormat['messageurl'] = qa_path_html('groupmsg/'.$groupid, null, qa_opt
     ('site_url'));
     $msgFormat['type'] = 'group';
@@ -199,4 +195,19 @@
       return true;
     }
     return false;
+  }
+
+  function cml_replace_content($content)
+  {
+    $regex1 = "/https?:\/\/www.youtube.com\/[\w?=]*+/Us";
+    $regex2 = "/\[uploaded-video\s*=\s*\"([^\"]*)\"\]/Us";
+    $regex3 = "/https{0,1}:\/\/w{0,3}\.*youtu\.be\/([A-Za-z0-9_-]+)/ui";
+    $regex4 = "/\[image=\"?([^\"]*)\"?\]/Us";
+    $ret = preg_replace($regex1, "", $content);
+    $ret = preg_replace($regex2, "", $ret);
+    $ret = preg_replace($regex3, "", $ret);
+    $ret = preg_replace($regex4, "", $ret);
+    $ret = strip_tags($ret);
+    $ret = mb_strimwidth($ret, 0, 100, "...", "utf-8");
+    return $ret;
   }
