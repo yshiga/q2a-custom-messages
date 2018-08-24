@@ -12,7 +12,10 @@
   width: auto;
   overflow: auto;
 }
-.mdl-list__item {
+.qa-template-messages main .mdl-list__item,
+.qa-template-messages-select-user main .mdl-list__item,
+.qa-template-messages-select-group main .mdl-list__item,
+.qa-template-messages-select-add-user main .mdl-list__item {
   border-top: 1px solid #ccc;
   padding: 0;
 }
