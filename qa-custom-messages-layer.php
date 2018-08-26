@@ -129,7 +129,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $tmp['messageid'] = $message['raw']['messageid'];
       $content = $this->get_html($message['content']); 
       // $content = $message['raw']['content'];
-      $tmp['content'] = $this->medium_editor_embed_replace($content);
+      $tmp['content'] = $this->filter_content($content);
       if ($message['raw']['fromhandle'] === $loginuserhandle) {
         $tmp['status'] = 'sent';
         $tmp['color'] = 'mdl-color--orange-100';
@@ -163,7 +163,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $tmp['messageid'] = $raw['messageid'];
       $tmp['handle'] = $raw['handle'];
       $content = $this->get_html($message['content']); 
-      $tmp['content'] = $this->medium_editor_embed_replace($content);
+      $tmp['content'] = $this->filter_content($content);
       if ($raw['handle'] === $loginuserhandle) {
         $tmp['status'] = 'sent';
         $tmp['color'] = 'mdl-color--orange-100';
@@ -357,5 +357,12 @@ EOF;
   {
     $path = CML_DIR . '/html/dialog_leave.html';
     include $path;
+  }
+
+  private function filter_content($content)
+  {
+    $tmp = $this->medium_editor_embed_replace($content);
+    $new_content = qa_theme_utils::add_image_anchor($tmp);
+    return $new_content;
   }
 }
