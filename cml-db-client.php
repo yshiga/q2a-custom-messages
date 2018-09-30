@@ -18,7 +18,16 @@ class cml_db_client
     $sql .= " fu.flags AS fromflags,";
     $sql .= " fu.level AS fromlevel,";
     $sql .= " fl.location AS fromlocation,";
-    $sql .= " m.*";
+    $sql .= " m.messageid,";
+    $sql .= " m.type,";
+    $sql .= " m.fromuserid,";
+    $sql .= " m.touserid,";
+    $sql .= " m.fromhidden,";
+    $sql .= " m.tohidden,";
+    $sql .= " m.content,";
+    $sql .= " m.format,";
+    $sql .= " m.created,";
+    $sql .= " NULL AS groupid";
     $sql .= " FROM ^messages m";
     $sql .= " LEFT JOIN ^users tu ON tu.userid = m.touserid";
     $sql .= " LEFT JOIN (";
@@ -45,8 +54,44 @@ class cml_db_client
     $sql .= " )";
     $sql .= " AND tu.handle IS NOT NULL";
     $sql .= " AND fu.handle IS NOT NULL";
+    
+    $sql .= " UNION ALL ";
+    $sql .= " SELECT ";
+    $sql .= " NULL AS tohandle,";
+    $sql .= " NULL AS toavatarblobid,";
+    $sql .= " NULL AS tolevels,";
+    $sql .= " NULL AS tofalgs,";
+    $sql .= " NULL AS tolocation,";
+    $sql .= " NULL AS fromhandle,";
+    $sql .= " NULL AS fromavatarblobid,";
+    $sql .= " NULL AS fromflags,";
+    $sql .= " NULL AS fromlevel,";
+    $sql .= " NULL AS fromlocation,";
+    $sql .= " NULL AS messageid,";
+    $sql .= " 'GROUP' AS type,";
+    $sql .= " gm.userid AS fromuserid,";
+    $sql .= " NULL AS touserid,";
+    $sql .= " NULL AS fromhidden,";
+    $sql .= " NULL AS tohidden,";
+    $sql .= " gm.content,";
+    $sql .= " gm.format,";
+    $sql .= " gm.created,";
+    $sql .= " gm.groupid";
+    $sql .= " FROM ^msg_group_messages gm";
+    $sql .= " INNER JOIN (";
+    $sql .= " SELECT MAX(created) AS maxdate";
+    $sql .= " FROM ^msg_group_messages";
+    $sql .= " GROUP BY groupid";
+    $sql .= " ) AS gm2";
+    $sql .= " ON gm.created = gm2.maxdate";
+    $sql .= " WHERE groupid IN (";
+    $sql .= " SELECT groupid";
+    $sql .= " FROM ^msg_group_users";
+    $sql .= " WHERE userid = $";
+    $sql .= " )";
     $sql .= " ORDER BY created DESC";
-    return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid, $userid));
+
+    return qa_db_read_all_assoc(qa_db_query_sub($sql, $userid, $userid, $userid, $userid));
   }
   
   public static function get_qa_count_days($userid=null, $days=30)
