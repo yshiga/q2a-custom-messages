@@ -134,7 +134,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $tmp['status'] = 'sent';
         $tmp['color'] = 'mdl-color--orange-100';
         $tmp['textalign'] = 'text-align: right;';
-        $tmp['deleteable'] = true;
+        if ($tmp['content'] != qa_lang_html('custom_messages/message_deleted')) {
+          $tmp['deleteable'] = true;
+        } else {
+          $tmp['deleteable'] = false;
+        }
       } else {
         $tmp['status'] = 'received';
         $tmp['color'] = 'mdl-color--grey-50';
