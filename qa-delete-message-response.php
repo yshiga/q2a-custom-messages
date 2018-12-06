@@ -1,6 +1,7 @@
 <?php
 
 require_once CML_DIR.'/cml-db-client.php';
+require_once CML_DIR.'/model/msg-group-messages.php';
 
 class qa_delete_message_response {
     
@@ -32,7 +33,7 @@ class qa_delete_message_response {
                 if ($type == 'private') {
                     $res = cml_db_client::update_message($messageid, $content);
                 } else {
-                    $res = false;
+                    $res = msg_group_messages::update_message($messageid, $content);
                 }
                 if ($res) {
                     http_response_code ( 200 );

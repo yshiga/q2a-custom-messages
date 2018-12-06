@@ -44,6 +44,14 @@ class msg_group_messages
         return qa_db_last_insert_id();
     }
 
+    public static function update_message($messageid, $content)
+    {
+        return qa_db_query_sub(
+            "UPDATE ^msg_group_messages SET content=$ WHERE messageid=#",
+            $content, $messageid
+        );
+    }
+
     public static function message_html_fields($message, $options)
     {
         require_once QA_INCLUDE_DIR.'app/users.php';
