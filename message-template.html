@@ -62,7 +62,7 @@ $(function(){
   });
 
   function delete_message(target_messageid) {
-    var delete_ajax_url = base_url + 'delete-message';
+    var delete_ajax_url = base_url + '<?php echo $delete_url; ?>';
     $.ajax({
       url: delete_ajax_url,
       type: 'POST',

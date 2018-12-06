@@ -109,6 +109,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
       } elseif ($this->template === 'groupmsg') {
         $messages = $this->get_group_messages($list['messages']);
       }
+      if (strpos(qa_request(), 'message') !== false) {
+        $delete_url = 'delete-message/private';
+      } else {
+        $delete_url = 'delete-message/group';
+      }
       $path = CML_DIR . '/message-template.html';
       include $path;
 
@@ -175,11 +180,17 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $tmp['color'] = 'mdl-color--orange-100';
         $tmp['textalign'] = 'style="text-align: right;display: block;"';
         $tmp['handle_align'] = 'style="text-align: right;display: block;"';
+        if ($tmp['content'] != qa_lang_html('custom_messages/message_deleted')) {
+          $tmp['deleteable'] = true;
+        } else {
+          $tmp['deleteable'] = false;
+        }
       } else {
         $tmp['status'] = 'received';
         $tmp['color'] = 'mdl-color--grey-50';
         $tmp['textalign'] = 'style="text-align: right;display: block;"';
         $tmp['handle_align'] = '';
+        $tmp['deleteable'] = false;
       }
       $tmp['avatarblobid'] = $raw['avatarblobid'];
       if (isset($message['when']['suffix']) && !empty($message['when']['suffix'])) {

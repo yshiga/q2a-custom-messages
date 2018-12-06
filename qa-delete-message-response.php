@@ -19,7 +19,7 @@ class qa_delete_message_response {
         try {
             $userid = qa_get_logged_in_userid();
             $messageid = qa_post_text('messageid');
-            $messageid = '';
+            $type = qa_request_part(1);
 
             if (empty($userid)) {
                 $error = 'Login is needed.';
@@ -29,7 +29,11 @@ class qa_delete_message_response {
 
             if (!$error) {
                 $content = qa_lang_html('custom_messages/message_deleted');
-                $res = cml_db_client::update_message($messageid, $content);
+                if ($type == 'private') {
+                    $res = cml_db_client::update_message($messageid, $content);
+                } else {
+                    $res = false;
+                }
                 if ($res) {
                     http_response_code ( 200 );
                 
