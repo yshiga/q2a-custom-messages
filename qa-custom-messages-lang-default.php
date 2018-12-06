@@ -44,6 +44,7 @@
 
     'label_yes' => 'はい',
     'label_no' => 'いいえ',
+    'label_delete' => '削除する',
   );
 
 /*

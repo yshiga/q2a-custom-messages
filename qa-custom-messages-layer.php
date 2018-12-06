@@ -133,11 +133,13 @@ class qa_html_theme_layer extends qa_html_theme_base {
       if ($message['raw']['fromhandle'] === $loginuserhandle) {
         $tmp['status'] = 'sent';
         $tmp['color'] = 'mdl-color--orange-100';
-        $tmp['textalign'] = 'style="text-align: right;"';
+        $tmp['textalign'] = 'text-align: right;';
+        $tmp['deleteable'] = true;
       } else {
         $tmp['status'] = 'received';
         $tmp['color'] = 'mdl-color--grey-50';
         $tmp['textalign'] = '';
+        $tmp['deleteable'] = false;
       }
       $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
       $created_date = qa_when_to_html($message['raw']['created'], 30);

@@ -14,7 +14,12 @@
             <div class="<?php echo $message['color']; ?> ballon padding--16px">
                 <?php echo $message['content']; ?>
             </div>
-            <span class="date mdl-typography--caption mdl-color-text--grey-500" <?php echo $message['textalign']; ?>><?php echo $message['created']; ?></span>
+            <span class="date mdl-typography--caption mdl-color-text--grey-500" style="<?php echo $message['textalign']; ?>"><?php echo $message['created']; ?></span>
+            <?php if($message['deleteable']): ?>
+            <a onclick="" class="date mdl-typography--caption" style="<?php echo $message['textalign']; ?>">
+              <?php echo qa_lang('custom_messages/label_delete'); ?>
+            </a>
+            <?php endif; ?>
           </div>
       </div>
     <?php endforeach; ?>
