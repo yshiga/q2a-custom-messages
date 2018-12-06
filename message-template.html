@@ -16,7 +16,7 @@
             </div>
             <span class="date mdl-typography--caption mdl-color-text--grey-500" style="<?php echo $message['textalign']; ?>"><?php echo $message['created']; ?></span>
             <?php if($message['deleteable']): ?>
-            <a onclick="" class="date mdl-typography--caption" style="<?php echo $message['textalign']; ?>">
+            <a class="date mdl-typography--caption delete-message" style="<?php echo $message['textalign']; ?>" data-id="<?php echo $message['messageid']; ?>">
               <?php echo qa_lang('custom_messages/label_delete'); ?>
             </a>
             <?php endif; ?>
@@ -26,3 +26,59 @@
     </div>
 
 </div>
+
+<dialog id="delete-message-confirm" class="mdl-dialog">
+  <h4>削除しますか？</h4>
+
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button close" type="button">
+      <?php echo qa_lang_html('custom_messages/label_no'); ?>
+    </button>
+    <button class="mdl-button delete-button" type="button">
+      <?php echo qa_lang_html('custom_messages/label_yes'); ?>
+    </button>
+  </div>
+</dialog>
+
+<script>
+$(function(){
+  var base_url = '<?php echo qa_opt("site_url"); ?>';
+  // 削除確認ダイアログ
+  var dialog = document.querySelector('#delete-message-confirm');
+  var target_messageid = null;
+  if (! dialog.showModal) {
+    dialogPolyfill.registerDialog(dialog);
+  }
+  $('.delete-message').click(function() {
+    target_messageid = $(this).data('id');
+    dialog.showModal();
+  });
+  dialog.querySelector('.close').addEventListener('click', function() {
+    dialog.close();
+  });
+  dialog.querySelector('.delete-button').addEventListener('click', function() {
+    delete_message(target_messageid);
+    dialog.close();
+  });
+
+  function delete_message(target_messageid) {
+    var delete_ajax_url = base_url + 'delete-message';
+    $.ajax({
+      url: delete_ajax_url,
+      type: 'POST',
+      dataType: 'json',
+      cache : false,
+      data: { messageid: target_messageid }
+    })
+    .done(function(res, status, xhr) {
+        if (xhr.status === 200) {
+            var msgbox = $('#m'+target_messageid).children('div');
+            msgbox.html(res.content);
+        } else {
+            console.log(xhr.status);
+            console.log(res);
+        }
+    })
+  }
+});
+</script>
