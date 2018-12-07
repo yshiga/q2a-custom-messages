@@ -109,11 +109,6 @@ class qa_html_theme_layer extends qa_html_theme_base {
       } elseif ($this->template === 'groupmsg') {
         $messages = $this->get_group_messages($list['messages']);
       }
-      if (strpos(qa_request(), 'message') !== false) {
-        $delete_url = 'delete-message/private';
-      } else {
-        $delete_url = 'delete-message/group';
-      }
       $path = CML_DIR . '/message-template.html';
       include $path;
 
@@ -224,6 +219,13 @@ class qa_html_theme_layer extends qa_html_theme_base {
         if (strpos(qa_get_state(), 'message-sent') === false) {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
         }
+        if (strpos(qa_request(), 'message') !== false) {
+          $delete_url = 'delete-message/private';
+        } else {
+          $delete_url = 'delete-message/group';
+        }
+        $path = CML_DIR . '/html/delete_confirm_dialog.html';
+        include $path;
       }
       if (qa_opt('site_theme') === CML_TARGET_THEME_NAME &&
           $this->template === 'groupmsg') {
