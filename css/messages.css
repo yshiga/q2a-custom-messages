@@ -137,6 +137,10 @@ font-size: 16px;
 line-height: 24px;
 color: #111;
 }
+.message-container .message a {
+  text-decoration: none;
+  cursor: pointer;
+}
 @media (max-width:375px){
     .message-container .avatar {
         margin: 0 16px 0 0;

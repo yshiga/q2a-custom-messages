@@ -44,6 +44,9 @@
 
     'label_yes' => 'はい',
     'label_no' => 'いいえ',
+    'label_delete' => '削除する',
+    'confirm_delete' => '削除しますか？',
+    'message_deleted' => 'メッセージが削除されました。',
   );
 
 /*

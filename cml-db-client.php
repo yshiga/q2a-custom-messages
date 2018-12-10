@@ -332,4 +332,12 @@ class cml_db_client
       return qa_db_read_all_assoc(qa_db_query_sub($sql));
   }
 
+  public static function update_message($messageid, $content)
+  {
+    return qa_db_query_sub(
+        "UPDATE ^messages SET content=$ WHERE messageid=#",
+        $content, $messageid
+    );
+  }
+
 }

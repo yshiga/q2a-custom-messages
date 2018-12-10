@@ -133,11 +133,17 @@ class qa_html_theme_layer extends qa_html_theme_base {
       if ($message['raw']['fromhandle'] === $loginuserhandle) {
         $tmp['status'] = 'sent';
         $tmp['color'] = 'mdl-color--orange-100';
-        $tmp['textalign'] = 'style="text-align: right;"';
+        $tmp['textalign'] = 'text-align: right;';
+        if ($tmp['content'] != qa_lang_html('custom_messages/message_deleted')) {
+          $tmp['deleteable'] = true;
+        } else {
+          $tmp['deleteable'] = false;
+        }
       } else {
         $tmp['status'] = 'received';
         $tmp['color'] = 'mdl-color--grey-50';
         $tmp['textalign'] = '';
+        $tmp['deleteable'] = false;
       }
       $tmp['avatarblobid'] = $message['raw']['fromavatarblobid'];
       $created_date = qa_when_to_html($message['raw']['created'], 30);
@@ -169,11 +175,17 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $tmp['color'] = 'mdl-color--orange-100';
         $tmp['textalign'] = 'style="text-align: right;display: block;"';
         $tmp['handle_align'] = 'style="text-align: right;display: block;"';
+        if ($tmp['content'] != qa_lang_html('custom_messages/message_deleted')) {
+          $tmp['deleteable'] = true;
+        } else {
+          $tmp['deleteable'] = false;
+        }
       } else {
         $tmp['status'] = 'received';
         $tmp['color'] = 'mdl-color--grey-50';
         $tmp['textalign'] = 'style="text-align: right;display: block;"';
         $tmp['handle_align'] = '';
+        $tmp['deleteable'] = false;
       }
       $tmp['avatarblobid'] = $raw['avatarblobid'];
       if (isset($message['when']['suffix']) && !empty($message['when']['suffix'])) {
@@ -207,6 +219,13 @@ class qa_html_theme_layer extends qa_html_theme_base {
         if (strpos(qa_get_state(), 'message-sent') === false) {
           $this->output('<script src="'. CML_RELATIVE_PATH . 'js/message.js' . '"></script>');
         }
+        if (strpos(qa_request(), 'message') !== false) {
+          $delete_url = 'delete-message/private';
+        } else {
+          $delete_url = 'delete-message/group';
+        }
+        $path = CML_DIR . '/html/delete_confirm_dialog.html';
+        include $path;
       }
       if (qa_opt('site_theme') === CML_TARGET_THEME_NAME &&
           $this->template === 'groupmsg') {
