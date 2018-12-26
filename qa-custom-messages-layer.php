@@ -64,6 +64,14 @@ class qa_html_theme_layer extends qa_html_theme_base {
         } elseif ($this->template === 'messages-select-add-user') {
           $this->output_select_add_user_button();
         }
+    } elseif ($region === 'main' && $place === 'high') {
+        if ($this->template === 'message') {
+            $show_ok = cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30);
+            $messages = isset($this->content['message_list']);
+            if ($messages || $show_ok) {
+                $this->output(@$this->content['no_post_html']);
+            }
+        }
     }
     qa_html_theme_base::widgets($region, $place);
   }
