@@ -194,11 +194,19 @@ if (qa_opt('show_message_history')) {
 
     $handles = array();
     foreach($current_group->all_users as $userid) {
-        $handles[]= qa_userid_to_handle($userid);
+        $handle = qa_userid_to_handle($userid);
+        if (empty($handle)) {
+            $handle = qa_lang('main/anonymous');
+        }
+        $handles[]= $handle;
     }
     $handlelinks = array();
     foreach ($handles as $handle) {
-        $handlelinks[] = '<a href="'.qa_path_html('user/'.$handle).'">'.qa_html($handle).'</a>';
+        if ($handle != qa_lang('main/anonymous')) {
+            $handlelinks[] = '<a href="'.qa_path_html('user/'.$handle).'">'.qa_html($handle).'</a>';
+        } else {
+            $handlelinks[] = qa_html($handle);
+        }
     }
     $qa_content['message_list']['title'] = qa_lang_html_sub('misc/message_recent_history', implode('、', $handlelinks));
 

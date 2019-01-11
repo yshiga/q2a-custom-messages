@@ -177,6 +177,9 @@ class msg_groups
                 continue;
             }
             $tmp = qa_userid_to_handle($userid);
+            if (empty($tmp)) {
+                $tmp = qa_lang('main/anonymous');
+            }
             $len += mb_strlen($tmp, 'UTF-8');
             if ($len <= 20) {
                 $handles[] = $tmp;
