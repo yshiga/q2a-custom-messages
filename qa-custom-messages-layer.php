@@ -175,7 +175,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
       $tmp = array();
       $raw = $message['raw'];
       $tmp['messageid'] = $raw['messageid'];
-      $tmp['handle'] = $raw['handle'];
+      if (empty($raw['handle'])) {
+        $tmp['handle'] = qa_lang('main/anonymous');
+      } else {
+        $tmp['handle'] = $raw['handle'];
+      }
       $content = $this->get_html($message['content']); 
       $tmp['content'] = $this->filter_content($content);
       if ($raw['handle'] === $loginuserhandle) {
@@ -195,7 +199,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
         $tmp['handle_align'] = '';
         $tmp['deleteable'] = false;
       }
-      $tmp['avatarblobid'] = $raw['avatarblobid'];
+      if (empty($raw['avatarblobid'])) {
+        $tmp['avatarblobid'] = qa_opt('avatar_default_blobid');
+      } else {
+        $tmp['avatarblobid'] = $raw['avatarblobid'];
+      }
       if (isset($message['when']['suffix']) && !empty($message['when']['suffix'])) {
         $tmp['created'] = $message['when']['data'] . $message['when']['suffix'];
       } else {
