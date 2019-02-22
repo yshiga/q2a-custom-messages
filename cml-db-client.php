@@ -180,58 +180,33 @@ class cml_db_client
   /*
    * 1ヶ月以内にやり取りのあったユーザーを取得するSQL
    */
-  public static function get_interaction_uesrs_sql()
+  public static function get_interaction_uesrs_sql($userid)
   {
+      $answered_and_comment_users = self::get_answered_and_comment_users($userid);
+      $blog_comment_users = self::get_blog_comment_users($userid);
+      $answered_and_comment_posted_users = self::get_answered_and_comment_posted_users($userid);
+      $blog_posted_users = self::get_blog_posted_users($userid);
+
+      // ユーザーIDの配列を結合
+      $merged_users = array_merge(
+        $answered_and_comment_users,
+        $blog_comment_users,
+        $answered_and_comment_posted_users,
+        $blog_posted_users
+      );
+      // 重複値をなくして、NULL削除
+      $uniq_filter_users = array_filter(array_unique($merged_users));
+      // 添字を振り直す
+      $userids = array_merge($uniq_filter_users);
+
       $sql = '';
-      $sql.= "SELECT userid";
-      $sql.= " FROM ^users";
-      $sql.= " WHERE userid IN (";
-      // 投稿に回答、または回答にコメントしてくれたユーザー
-      $sql.= " SELECT userid";
-      $sql.= " FROM ^posts";
-      $sql.= " WHERE parentid IN (";
-      $sql.= "    SELECT postid";
-      $sql.= "    FROM ^posts";
-      $sql.= "    WHERE userid = $";
-      $sql.= "    AND type IN ('Q', 'A')";
-      $sql.= " )";
-      $sql.= " AND created > DATE_SUB(NOW(), INTERVAL 30 DAY)";
-      // 飼育日誌にコメントしてくれたユーザー
-      $sql.= " UNION";
-      $sql.= " SELECT userid";
-      $sql.= " FROM ^blogs";
-      $sql.= " WHERE parentid IN (";
-      $sql.= "    SELECT postid";
-      $sql.= "    FROM ^blogs";
-      $sql.= "    WHERE userid = $";
-      $sql.= "    AND type = 'B'";
-      $sql.= " )";
-      $sql.= " AND created > DATE_SUB(NOW(), INTERVAL 30 DAY)";
-      // 回答した質問、コメントした回答を投稿したユーザー
-      $sql.= " UNION";
-      $sql.= " SELECT userid";
-      $sql.= " FROM ^posts";
-      $sql.= " WHERE postid IN (";
-      $sql.= "    SELECT parentid";
-      $sql.= "    FROM ^posts";
-      $sql.= "    WHERE userid = $";
-      $sql.= "    AND type IN ('C', 'A')";
-      $sql.= "    AND created > DATE_SUB(NOW(), INTERVAL 30 DAY)";
-      $sql.= " )";
-      // コメントした飼育日誌を投稿したユーザー
-      $sql.= " UNION";
-      $sql.= " SELECT userid";
-      $sql.= " FROM ^blogs";
-      $sql.= " WHERE postid IN (";
-      $sql.= "    SELECT parentid";
-      $sql.= "    FROM ^blogs";
-      $sql.= "    WHERE userid = $";
-      $sql.= "    AND type = 'C'";
-      $sql.= "    AND created > DATE_SUB(NOW(), INTERVAL 30 DAY)";
-      $sql.= " )";
-      $sql.= " )";
-      $sql.= " AND userid != $";
-      $sql.= " ORDER BY created DESC";
+      if (count($userids) > 0) {
+        $sql.= "SELECT userid";
+        $sql.= " FROM ^users";
+        $sql.= " WHERE userid != $";
+        $sql.= qa_db_apply_sub(" AND userid IN ($)", array($userids));
+        $sql.= " ORDER BY created DESC";
+      }
       return $sql;
   }
 
@@ -256,8 +231,12 @@ class cml_db_client
   public static function select_interaction_users($userid)
   {
       // 回答やコメント、飼育日誌でやり取りしたユーザー
-      $sql = self::get_interaction_uesrs_sql();
-      $interaction_users = qa_db_read_all_values(qa_db_query_sub($sql, $userid, $userid, $userid, $userid, $userid));
+      $sql = self::get_interaction_uesrs_sql($userid);
+      if (!empty($sql)) {
+        $interaction_users = qa_db_read_all_values(qa_db_query_sub($sql, $userid));
+      } else {
+        $interaction_users = array();
+      }
       // 最近メッセージを送ったユーザー
       $sql2 = self::get_recent_send_message_users_sql();
       $send_message_users = qa_db_read_all_values(qa_db_query_sub($sql2, $userid));
@@ -280,7 +259,7 @@ class cml_db_client
 
         $result = qa_db_read_all_assoc(qa_db_query_sub($sql, $userids, QA_USER_FLAGS_NO_MESSAGES));
       } else {
-        $result = null;
+        $result = array();
       }
       return $result;
   }
@@ -340,4 +319,63 @@ class cml_db_client
     );
   }
 
+  private static function get_answered_and_comment_users($userid, $day=30)
+  {
+    $sql = "";
+    $sql.= "SELECT DISTINCT userid";
+    $sql.= " FROM ^posts";
+    $sql.= " WHERE parentid IN (";
+    $sql.= "    SELECT postid";
+    $sql.= "    FROM ^posts";
+    $sql.= "    WHERE userid = $";
+    $sql.= "    AND type IN ('Q', 'A')";
+    $sql.= " )";
+    $sql.= " AND created > DATE_SUB(NOW(), INTERVAL # DAY)";
+    return qa_db_read_all_values(qa_db_query_sub($sql, $userid, $day));
+  }
+
+  private static function get_blog_comment_users($userid, $day=30)
+  {
+    $sql = "";
+    $sql.= " SELECT DISTINCT userid";
+    $sql.= " FROM ^blogs";
+    $sql.= " WHERE parentid IN (";
+    $sql.= "    SELECT postid";
+    $sql.= "    FROM ^blogs";
+    $sql.= "    WHERE userid = $";
+    $sql.= "    AND type = 'B'";
+    $sql.= " )";
+    $sql.= " AND created > DATE_SUB(NOW(), INTERVAL # DAY)";
+    return qa_db_read_all_values(qa_db_query_sub($sql, $userid, $day));
+  }
+
+  private static function get_answered_and_comment_posted_users($userid, $day=30)
+  {
+    $sql = "";
+    $sql.= " SELECT DISTINCT userid";
+    $sql.= " FROM ^posts";
+    $sql.= " WHERE postid IN (";
+    $sql.= "    SELECT parentid";
+    $sql.= "    FROM ^posts";
+    $sql.= "    WHERE userid = $";
+    $sql.= "    AND type IN ('C', 'A')";
+    $sql.= "    AND created > DATE_SUB(NOW(), INTERVAL # DAY)";
+    $sql.= " )";
+    return qa_db_read_all_values(qa_db_query_sub($sql, $userid, $day));
+  }
+
+  private static function get_blog_posted_users($userid, $day=30)
+  {
+    $sql = "";
+    $sql.= " SELECT DISTINCT userid";
+    $sql.= " FROM ^blogs";
+    $sql.= " WHERE postid IN (";
+    $sql.= "    SELECT parentid";
+    $sql.= "    FROM ^blogs";
+    $sql.= "    WHERE userid = $";
+    $sql.= "    AND type = 'C'";
+    $sql.= "    AND created > DATE_SUB(NOW(), INTERVAL # DAY)";
+    $sql.= " )";
+    return qa_db_read_all_values(qa_db_query_sub($sql, $userid, $day));
+  }
 }
