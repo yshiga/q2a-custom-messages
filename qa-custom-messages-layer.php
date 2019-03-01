@@ -287,9 +287,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   private function output_not_posts() {
     $msg_temp = qa_lang('custom_messages/not_post_message');
+    $base = qa_opt('site_url');
     $subs = array(
-      '^ask_url' => '/ask',
-      '^root_url' => '/',
+      '^ask_url' => qa_path('ask', null, $base),
+      '^root_url' => qa_path('', null, $base),
+      '^blog_post' => qa_path('blog/new', null, $base)
     );
     $message = strtr($msg_temp, $subs);
     $path = CML_DIR . '/html/not_post_qa_blog.html';
