@@ -46,7 +46,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
         }
       }
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-user') {
-      $this->output_user_list();
+      if (cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30)) {
+        $this->output_user_list();
+      } else {
+        $this->output_not_posts();
+      }
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group') {
       $this->output_select_group();
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-add-user') {
