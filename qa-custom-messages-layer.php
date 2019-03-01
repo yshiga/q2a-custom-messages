@@ -46,7 +46,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
         }
       }
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-user') {
-      $this->output_user_list();
+      if (cml_db_client::check_show_user_message(qa_get_logged_in_userid(), 30)) {
+        $this->output_user_list();
+      } else {
+        $this->output_not_posts();
+      }
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-group') {
       $this->output_select_group();
     } elseif ($current_theme === CML_TARGET_THEME_NAME && $this->template === 'messages-select-add-user') {
@@ -287,9 +291,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   private function output_not_posts() {
     $msg_temp = qa_lang('custom_messages/not_post_message');
+    $base = qa_opt('site_url');
     $subs = array(
-      '^ask_url' => '/ask',
-      '^root_url' => '/',
+      '^ask_url' => qa_path('ask', null, $base),
+      '^root_url' => qa_path('', null, $base),
+      '^blog_post' => qa_path('blog/new', null, $base)
     );
     $message = strtr($msg_temp, $subs);
     $path = CML_DIR . '/html/not_post_qa_blog.html';
