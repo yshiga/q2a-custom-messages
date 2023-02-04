@@ -139,7 +139,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
     foreach ($messages as $message) {
       $tmp = array();
       $tmp['messageid'] = $message['raw']['messageid'];
-      $content = $this->get_html($message['content']); 
+      $content = $this->get_html($message['content']);
       // $content = $message['raw']['content'];
       $tmp['content'] = $this->filter_content($content);
       if ($message['raw']['fromhandle'] === $loginuserhandle) {
@@ -184,7 +184,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       } else {
         $tmp['handle'] = $raw['handle'];
       }
-      $content = $this->get_html($message['content']); 
+      $content = $this->get_html($message['content']);
       $tmp['content'] = $this->filter_content($content);
       if ($raw['handle'] === $loginuserhandle) {
         $tmp['status'] = 'sent';
@@ -233,7 +233,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function body_footer()
   {
-      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME 
+      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME
          && ($this->template === 'message'
          || $this->template === 'groupmsg')) {
         if (strpos(qa_get_state(), 'message-sent') === false) {
@@ -256,7 +256,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
   public function form_buttons($form, $columns)
   {
-      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME 
+      if (qa_opt('site_theme') === CML_TARGET_THEME_NAME
       && ($this->template === 'message'
       ||  $this->template === 'groupmsg')) {
           if(isset($form['buttons']['send'])) {
@@ -267,7 +267,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
       }
       qa_html_theme_base::form_buttons($form, $columns);
   }
-  
+
   public function get_html($html) {
     require_once QA_INCLUDE_DIR.'util/string.php';
 

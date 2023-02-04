@@ -80,11 +80,11 @@ if ($state == 'email-error')
     $pageerror = qa_lang_html('main/email_error');
 
 if (qa_post_text('domessage')) {
-    
+
     qa_get_post_content('editor', 'content', $in['editor'], $in['content'], $in['format'], $in['text']);
-    
+
     $inmessage = strip_spaces($in['content']);
-    
+
     if (isset($pageerror)) {
         // not permitted to post, so quit here
         $qa_content['error'] = $pageerror;
@@ -130,7 +130,7 @@ $start = qa_get_start();
 $pagesize = qa_opt('page_size_pms');
 
 // $hideForm = !empty($pageerror) || $messagesent;
-$hideForm = !empty($pageerror);
+$hideForm = true; // !empty($pageerror);
 
 $qa_content['title'] = qa_lang_html('misc/private_message_title');
 
@@ -234,13 +234,13 @@ return $qa_content;
 
 function strip_spaces($content)
 {
-    
+
     $pat = '/<p class=""><br><\/p>/i';
     $pat2 = '/<p class="">(&nbsp;\s?)*<\/p>/i';
 
     $result = preg_replace($pat, "", $content);
     $result2 = preg_replace($pat2, "", $result);
-    
+
     if (empty($result2)) {
         $return_content = "";
     } else {
